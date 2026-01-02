@@ -97,10 +97,10 @@ label start:
     #jump cena_derrota_clube
     #jump boss_fight_luisa
     #jump boss_fight_enzo
-    #jump abrir_hub
+    jump abrir_hub
     #jump convidar_maya_para_role
     #jump encontro_amigos_pos_derrota
-    jump cena_escola_rival
+    #jump cena_escola_rival
 
 # 3. Cena do Clube
 label cena_derrota_clube:

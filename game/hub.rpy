@@ -1,22 +1,19 @@
-﻿# 1. DEFINIÇÃO DOS ESTILOS
-style hub_button:
-    background Frame(Solid("#2c3e50cc"), 4, 4) 
-    hover_background Solid("#3498db")          
-    insensitive_background Solid("#451a1acc") 
-    padding (20, 15)
-    xminimum 380 
+﻿# ==========================================
+# 1. TRANSFORMAÇÃO (MANTENDO SEUS AJUSTES)
+# ==========================================
+transform prop_style:
+    zoom 0.45
+    on hover:
+        matrixcolor BrightnessMatrix(0.15)
+    on idle:
+        matrixcolor BrightnessMatrix(0.0)
 
-style hub_button_text:
-    color "#ffffff"
-    insensitive_color "#888888" 
-    size 28 
-    bold True
-    xalign 0.5
-    outlines [ (2, "#000000", 0, 0) ]
-
-# 2. DEFINIÇÃO DA SCREEN
+# ==========================================
+# 2. SCREEN DO HUB (SUAS COORDENADAS)
+# ==========================================
 screen hub_principal():
-    add "mapahub" 
+    tag menu
+    add "quartohubvazio"
 
     # Painel de Status
     frame:
@@ -24,116 +21,205 @@ screen hub_principal():
         background Solid("#00000088")
         padding (10, 10)
         vbox:
-            text "Rating: [theo_rating]" size 22 color "#f1c40f"
-            text "Foco: [theo_foco]%" size 22 color "#ecf0f1"
+            # text "Rating: [theo_rating]" size 22 color "#f1c40f"
+            # text "Foco: [theo_foco]%" size 22 color "#ecf0f1"
             text "Atividades: [acoes_hoje] / 2" size 20 color "#3498db"
 
-    # Menu de Ações
-    vbox:
-        xalign 0.5 yalign 0.65
-        spacing 12 
+    # LIVRO
+    imagebutton:
+        idle "props/livro.png"
+        hover "props/livro hover.png"
+        xpos 186 ypos 287 anchor (0.5, 1.0) 
+        at prop_style
+        focus_mask True
+        action Jump("hub_treinar")
 
-        textbutton "🧠 Treinar Xadrez":
-            action Jump("preparar_treino")
-            style "hub_button"
-            sensitive acoes_hoje < 2 and theo_foco >= 20 
+    # SMARTPHONE
+    imagebutton:
+        idle "props/smartphone.png"
+        hover "props/smartphone hover.png"
+        xpos 711 ypos 489 anchor (0.5, 1.0) 
+        at prop_style
+        focus_mask True
+        action Jump("ver_mensagens")
 
-        # --- BOTÃO INSERIDO AQUI ---
-        textbutton "☕ Convidar Maya para Rolê":
-            action Jump("convidar_maya_para_role")
-            style "hub_button"
-            sensitive acoes_hoje < 2
-        # ---------------------------
+    # CALENDÁRIO
+    imagebutton:
+        idle "props/calendario.png"
+        hover "props/calendario hover.png"
+        xpos 1150 ypos 100 anchor (0.5, 0.0)        
+        at prop_style
+        focus_mask True
+        action Show("tela_torneios")
 
-        textbutton "🏆 Ver Torneios":
-            action Show("tela_torneios")
-            style "hub_button"
-            sensitive acoes_hoje < 2 
+    # LAPTOP (Zoom 1.4)
+    imagebutton:
+        idle "props/laptop.png"
+        hover "props/laptop hover.png"
+        xpos 301 ypos 77 
+        at prop_style, Transform(zoom=1.4) 
+        focus_mask True
+        action Jump("usar_laptop")
+
+    # RETRATOS
+    imagebutton:
+        idle "props/luisaretrato.png"
+        hover "props/luisaretrato hover.png"
+        xpos 1200 ypos 456 anchor (0.5, 0.5)
+        at prop_style
+        focus_mask True
+        action Jump("olhar_foto_luisa")
+
+    imagebutton:
+        idle "props/mayaretrato.png"
+        hover "props/mayaretrato hover.png"
+        xpos 1000 ypos 625 anchor (0.5, 0.5)
+        at prop_style
+        focus_mask True
+        action Jump("olhar_foto_maya")
+
+    imagebutton:
+        idle "props/leoretrato.png"
+        hover "props/leoretrato hover.png"
+        xpos 985 ypos 398 anchor (0.5, 0.5)
+        at prop_style
+        focus_mask True
+        action Jump("olhar_foto_leo")
+
+    # TROFÉU / QUADRO (Para ver Stats)
+    imagebutton:
+        idle "props/trofeu.png"
+        hover "props/trofeu hover.png"
+        xpos 850 ypos 200 anchor (0.5, 0.5)
+        at prop_style, Transform(zoom=1) # Ajuste o zoom se ele estiver grande também
+        focus_mask True
+        # Certifique-se que o nome aqui seja IGUAL ao da screen lá embaixo
+        action Show("tela_stats_detalhada")
+
+    # RELÓGIO (Ajustado para ficar menor)
+    imagebutton:
+        idle "props/relogio.png"
+        hover "props/relogio hover.png"
         
-        # Mensagem para Maya
-        textbutton ("📱 " + ("🔴 " if nova_msg_maya else "") + "Mensagem para Maya"):
-            action Jump("conversa_maya")
-            style "hub_button"
+        # Aqui está o segredo: diminuímos o zoom só para este botão
+        at prop_style, Transform(zoom=0.7) 
+        
+        xpos 99 ypos 230 anchor (0.5, 0.5) 
+        focus_mask True
+        action Jump("confirmar_passar_dia")
 
-        # Mensagem para Leo
-        textbutton ("📱 " + ("🔴 " if nova_msg_leo else "") + "Mensagem para Leo"):
-            action Jump("conversa_leo")
-            style "hub_button"
-
-        # Mensagem para Luisa
-        textbutton ("📱 " + ("🔴 " if nova_msg_luisa else "") + "Mensagem para Luisa"):
-            action Jump("conversa_luisa")
-            style "hub_button"
-
-        textbutton "💤 Descansar (Próximo Dia)":
-            action Jump("proximo_dia")
-            style "hub_button"
-
-screen tela_torneios():
-    modal True 
+# ==========================================
+# 3. SUA SCREEN DE CHAT (RESTAURADA)
+# ==========================================
+screen tela_chat(personagem_nome, personagem_avatar, mensagem_texto):
+    modal True
     add Solid("#000000cc") 
 
-    frame:
+    fixed:
         xalign 0.5 yalign 0.5
-        padding (20, 20)
-        background Solid("#1c1c1c")
-        xsize 600 ysize 550 
+        xsize 500 ysize 900 
+
+        add "smartphonemockup" xalign 0.5 yalign 0.5
 
         vbox:
-            spacing 10
-            xfill True
-            text "Calendário de Torneios" xalign 0.5 size 30 color "#f1c40f"
-            null height 10
-            
-            viewport:
-                draggable True
-                mousewheel True
-                scrollbars "vertical"
-                child_size (550, None)
+            xalign 0.5
+            ypos 0.22 
+            xsize 320 
+            spacing 20
 
+            hbox:
+                spacing 15
+                xalign 0.1
+                add personagem_avatar zoom 0.8 
+                
                 vbox:
-                    spacing 15
-                    xalign 0.5
-                    
-                    for item in lista_torneios:
-                        $ nome = item[0]
-                        $ rating_req = item[1]
-                        $ destino = item[2]
-                        
-                        # --- VERIFICAÇÃO MANUAL (À prova de falhas) ---
-                        $ ja_venceu = False
-                        
-                        if nome == "Desafio do Enzo" and persistent.enzo_derrotado:
-                            $ ja_venceu = True
-                        elif nome == "Desafio da Luísa" and persistent.luisa_derrotada:
-                            $ ja_venceu = True
-                        
-                        # Se você tiver mais torneios com cadeado, adicione o 'elif' deles aqui
+                    yalign 0.5
+                    text "[personagem_nome]" color "#ffffff" size 22 bold True
+                    text "online" color "#4df14d" size 14
 
-                        # --- EXIBIÇÃO DO BOTÃO ---
-                        if ja_venceu:
-                            textbutton "🔒 [nome] (Concluído)":
-                                action None
-                                xfill True
-                                sensitive False 
-                        
-                        elif theo_rating >= rating_req:
-                            textbutton "🏆 [nome] (Req: [rating_req])":
-                                action [Hide("tela_torneios"), Jump(destino)]
-                                xfill True
-                        
-                        else:
-                            textbutton "🔒 [nome] (Bloqueado: [rating_req])":
-                                action None
-                                xfill True
-                                sensitive False 
-
-            null height 20
-            textbutton "Fechar":
-                action Hide("tela_torneios")
+            frame:
+                background Frame(Solid("#2c3e50"), 10, 10) 
+                padding (15, 15, 15, 15)
+                xsize 300
                 xalign 0.5
-                            
+                
+                text "[mensagem_texto]":
+                    color "#ffffff"
+                    size 20
+                    line_spacing 5
+
+            null height 100 
+
+            textbutton "FECHAR":
+                action Return()
+                xalign 0.5
+                ypos 0.85 
+                text_size 18
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+# ==========================================
+# 4. LABELS E LÓGICA ALEATÓRIA
+# ==========================================
+label ver_mensagens:
+    python:
+        import random
+        quem_manda = random.randint(0, 2)
+        if quem_manda == 0:
+            n_chat, a_chat = "Maya", "mayaicone"
+            t_chat = random.choice(respostas_maya)
+        elif quem_manda == 1:
+            n_chat, a_chat = "Leo", "leoicone"
+            t_chat = random.choice(respostas_leo)
+        else:
+            n_chat, a_chat = "Luísa", "luisaicone"
+            t_chat = random.choice(respostas_luisa)
+
+    call screen tela_chat(n_chat, a_chat, t_chat)
+    call screen hub_principal
+
+label usar_laptop:
+    "Theo" "Vou checar o fórum... nada de interessante hoje."
+    call screen hub_principal
+
+label olhar_foto_luisa:
+    "Theo" "Minha mãe sempre foi meu porto seguro."
+    call screen hub_principal
+
+label olhar_foto_maya:
+    "Theo" "Maya... ela é incrível no tabuleiro."
+    call screen hub_principal
+
+label olhar_foto_leo:
+    "Theo" "Leo é um amigão, mesmo sendo meio doido."
+    call screen hub_principal
+
+
+label confirmar_passar_dia:
+    show quartohubvazio
+    menu:
+        "O dia ainda não acabou. Deseja realmente ir dormir?"
+        
+        "Sim, ir dormir.":
+            scene black with dissolve
+            $ acoes_hoje = 0
+            $ theo_foco = min(theo_foco + 50, 100)
+            pause 1.0
+            "Theo descansou e recuperou suas energias."
+            
+            # SOLUÇÃO: Em vez de jump hub_start, usamos:
+            call screen hub_principal 
+
+        "Não, ainda tenho coisas para fazer.":
+            call screen hub_principal
