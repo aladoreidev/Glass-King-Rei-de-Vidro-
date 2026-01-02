@@ -16,13 +16,15 @@ default afeto_luisa = 0       # Substitua pelo nome da personagem
 
 
 # 1. Definição dos Personagens
-define t = Character("Theo", color="#ffffff")
-define l = Character("Léo", color="#2ecc71")   # Verde (Amigável/Equilibrado)
-define ma = Character("Maya", color="#e91e63") # Rosa/Carmim (Intensa/Passional)
-define lu = Character("Luisa", color="#95a5a6") # Cinza (Analítica/Fria)
-define m = Character("Macedo", color="#7f8c8d") # Cinza Escuro (Antigo)
-define ph = Character("Dr. Henrique", color="#7f8c8d") # Cor cinza sóbria
+define t = Character("Theo", color="#3b0fea")
+define l = Character("Léo", color="#12ef6e")   
+define ma = Character("Maya", color="#e91e63") 
+define lu = Character("Luisa", color="#e4e126") 
+define m = Character("Macedo", color="#7f8c8d") 
+define ph = Character("Dr. Henrique", color="#7f8c8d") 
 define enz = Character("Enzo", color="#e74c3c")
+define mae = Character("Dra Karolina", color="#ed2913")
+define v = Character("Vico",color="#043d23")
 
 
 #Hh para Boss Figth
@@ -42,9 +44,20 @@ default nova_msg_luisa = False
 
 # Para garantir que eles não mandem a mesma mensagem várias vezes
 default msg_luisa_derrotada_lida = False
-default persistent.luisa_derrotada = False
-default persistent.enzo_derrotado = False
 default msg_enzo_derrotado_lida = False # Caso queira usar essa trava específica
+
+# Declaração das variáveis persistentes (para não dar erro de 'not defaulted')
+default persistent.enzo_vencido = False
+default persistent.luisa_vencida = False
+default persistent.copa_local_vencida = False
+default persistent.regional_vencido = False
+default persistent.aberto_cidade_vencido = False
+default persistent.estadual_vencido = False
+default persistent.memorial_vencido = False
+default persistent.nacional_vencido = False
+default persistent.seletiva_vencido = False
+default persistent.candidatos_vencido = False
+default persistent.mundial_vencido = False
 
 
 
@@ -77,11 +90,6 @@ transform maya_busto:
     xalign 0.75 ypos 2.0 yanchor 1.0 zoom 0.6
 
 
-
-
-
-
-
 # 2. Ponto de Partida
 label start:
     show screen status_personagem
@@ -90,7 +98,9 @@ label start:
     #jump boss_fight_luisa
     #jump boss_fight_enzo
     #jump abrir_hub
-    jump convidar_maya_para_role
+    #jump convidar_maya_para_role
+    #jump encontro_amigos_pos_derrota
+    jump cena_escola_rival
 
 # 3. Cena do Clube
 label cena_derrota_clube:
@@ -184,7 +194,7 @@ label encontro_amigos_pos_derrota:
     scene ruanoite with fade
 
     # Theo no centro com o novo padrão
-    show theo feliz at pos_theo 
+    show theo triste at pos_theo 
 
     "O ar gelado da noite ajuda a baixar a adrenalina, mas o silêncio é logo interrompido por passos rápidos."
 
@@ -325,33 +335,341 @@ label erro_torre:
 label segue_conversa_pizzaria:
     "Após o desafio, os vossos hambúrgueres finalmente chegam à mesa."
     "A noite termina com risadas, mas você sabe que amanhã o treino volta a ser sério."
-    jump flashback_infancia
+    jump cena_jantar_pais
 
 
-# --- SCREEN DO PUZZLE (Apenas para garantir que funcione se não estiver em outro arquivo) ---
-screen puzzle_guardanapo_circles():
-    zorder 100
-    modal True
-    vbox:
-        xalign 0.95 yalign 0.2 spacing 20
-        add "desafioguardanapo" zoom 0.45
-        hbox:
-            xalign 0.5 spacing 15
-            button:
-                action Jump("mate_correto")
-                background Frame(Solid("#4CAF50"), 0, 0)
-                xminimum 120 yminimum 120 padding (5, 5)
-                text "Dxf7+" align (0.5, 0.5) size 18 color "#fff" bold True
-            button:
-                action Jump("erro_bispo")
-                background Frame(Solid("#F44336"), 0, 0)
-                xminimum 120 yminimum 120 padding (5, 5)
-                text "Bxf7+" align (0.5, 0.5) size 18 color "#fff" bold True
-            button:
-                action Jump("erro_torre")
-                background Frame(Solid("#2196F3"), 0, 0)
-                xminimum 120 yminimum 120 padding (5, 5)
-                text "Tf8" align (0.5, 0.5) size 18 color "#fff" bold True
+label cena_jantar_pais:
+    scene bg_sala_jantar with fade
+    
+    "O tilintar dos talheres na porcelana era o único som na sala. No xadrez, o silêncio é foco. Aqui, é julgamento."
+    "Meu pai limpou o canto da boca com o guardanapo de linho. Ele ainda nem tinha olhado para mim."
+
+    show dr_henrique at right with dissolve
+    ph "Fiquei sabendo que o torneio no clube não correu como o esperado hoje, Theodoro. O Dr. Arnaldo mencionou que você... 'se atrapalhou'?"
+
+    t "Foi um incidente técnico, pai. Eu estava com uma vantagem decisiva contra o Macedo."
+
+    ph "Vantagem não ganha causas, nem partidas. No Direito, se você deixa uma prova escapar porque 'se atrapalhou', o cliente vai preso."
+    ph "Um futuro jurista precisa de mais... Estabilidade." # Aspas fechadas aqui
+
+    show mae_medica at left with dissolve
+    mae "Henrique, deixe o menino respirar. Querido, você não comeu quase nada ."
+    mae "Theo querido... sua mão está tremendo um pouco? Você deve estar stressado. Talvez o xadrez esteja drenando o Foco que você deveria dedicar aos Estudos."
+
+    menu:
+        "Tentar explicar o incidente da xícara.":
+            $ theo_estabilidade -= 5
+            $ theo_ousadia += 10
+            $ theo_foco -= 5
+            t "O ambiente estava um caos! Alguém quebrou uma xícara atrás de mim. O barulho me pegou de surpresa!"
+            ph "Theodoro, para ser um homem bem sucedido você não pode se dar ao luxo de ser refém do ambiente."
+            ph "O mundo é barulhento, Theo. Tribunais são barulhentos. Hospitais são caóticos."
+            ph "Se uma xícara de porcelana é o suficiente para desestabilizar sua mão, então você ainda não passa de um amador brincando com bonecos de madeira."
+            
+            mae "Henrique, não seja tão duro... Mas ele tem um ponto, Theo. O autocontrole é a sua maior ferramenta"
+            mae "Imagine, se durante uma cirurgia eu me desesperasse porque um enfermeiro deixou um instrumento cair, ou porque o monitor começou a apitar fora de hora?"
+            mae "Vidas dependem da minha mão estar firme, não importa o barulho ao redor. Você precisa aprender que o seu foco deve ser uma fortaleza, Theo."
+            
+            ph "Exatamente. Agora, termine seu jantar. O silêncio é a melhor companhia para quem tem muito o que refletir."
+
+        "Aceitar a crítica em silêncio.":
+            $ theo_estabilidade += 15
+            $ theo_ousadia -= 5
+            "Aperto o garfo com tanta força que meus dedos ficam brancos. Engulo o orgulho junto com a comida insossa."
+            t "Sim, senhor. Foi um erro grosseiro. Vou garantir que minha concentração seja impenetrável na próxima."
+            
+            ph "Bom. Disciplina é a única coisa que separa um Desembargador de um rábula. O rábula é barulhento, vive de desculpas e de 'quases'."
+            ph "Um homem da sua linhagem não 'se atrapalha'. Ele domina. Se o ambiente o afetou, é porque você permitiu que o ambiente fosse maior que a sua vontade."
+            
+            mae "Veja pelo lado positivo, Henrique. Se ele reconhece a falha, pode focar em não repeti-la."
+            mae "O erro no xadrez é um luxo que você pode cometer agora, Theo. Mas na mesa de cirurgia, o primeiro erro é o último."
+            
+            t "Eu entendo... Só preciso de tempo para treinar mais."
+            
+            ph "Tempo é o recurso mais caro que temos. Não o desperdice com partidas medíocres contra jogadores de clube."
+            ph "Se quer ser um rei, comporte-se como um. Reis não dão desculpas para a coroa cair."
+
+    mae "Sabe, filho, o vestibular está chegando. Não queremos que você pare de jogar, mas..."
+    
+    mae "Precisamos ser realistas. O xadrez é um jogo lindo para exercitar a mente, mas ele não sustenta uma casa, não paga as contas e, certamente, não impõe o respeito que o sobrenome da nossa família carrega."
+    
+    mae "Seu pai construiu um legado no Direito. Ele abriu um caminho de ouro para você seguir. Imagine o desperdício de trocar uma carreira sólida no Judiciário por... por tabuleiros de madeira e torneios em clubes empoeirados?"
+    
+    t "Mãe, não é só um jogo. Eu estou entre os melhores da minha categoria..."
+    
+    mae "Ser o melhor em um hobby ainda é ser um hobbista, Theo. O mundo não precisa de mais um 'Rei de Vidro' em um tabuleiro. O mundo precisa de homens como o seu pai, que decidem o destino das pessoas."
+    
+    ph "Escute sua mãe. O xadrez pode ser o seu lazer, mas o Direito será a sua armadura. Agora, vá para o seu quarto. Reflita sobre o que é ser um homem de verdade."
+
+    t "Eu sei, mãe. Eu estou equilibrando as coisas."
+
+    "A pressão deles é como uma prensa hidráulica."
+
+    hide dr_henrique
+    hide mae_medica
+    with dissolve
+
+    window hide
+    jump pos_jantar_quarto 
+
+
+label pos_jantar_quarto:
+    scene bg_quarto_theo with fade
+    play sound "audio/door_lock.ogg" # Som de porta trancando
+    
+    "O clique da fechadura é o único som que me traz paz. Trancar a porta não é apenas por privacidade... é para manter o mundo deles lá fora."
+    
+    show theo raiva at center with dissolve
+    
+    "Sento-me na beira da cama. O silêncio do meu quarto ainda ecoa as palavras dos meus pais sobre Carreira, foco, estabilidade"
+    
+    t "(Pensamento) 'Linhagem'... 'Legado'... Eles falam como se eu fosse apenas uma peça no tabuleiro deles. Um peão que deve avançar até a última casa para se tornar o que eles querem."
+
+    # Aqui os atributos moldam a reflexão do Theo
+    if theo_estabilidade > 60:
+        "Respiro fundo. O peso no meu peito é grande, mas minha mente está firme. Eu não vou quebrar. Se eles querem um mestre, eu vou dar um mestre a eles... mas no meu tabuleiro."
+    elif theo_ousadia > 60:
+        "Sinto uma queimação no estômago. A vontade é de abrir a porta e dizer que o xadrez é a única coisa que me faz sentir vivo. Mas ainda não é a hora. Eu preciso de resultados."
+    else:
+        "A dúvida rasteja pela minha mente. E se eles estiverem certos? E se eu for apenas um amador insistindo em um sonho frágil?"
+
+    menu:
+        "Ligar o computador e estudar a partida contra o Macedo. (Foco +10)":
+            $ theo_foco += 10
+            "Não posso mudar o jantar, mas posso mudar o próximo lance. Abro o banco de dados. O erro do Bispo não vai se repetir."
+            
+        "Deitar e encarar o teto, tentando silenciar as vozes. (Estabilidade +10)":
+            $ theo_estabilidade += 10
+            "Fecho os olhos. Ignoro a medicina, ignoro o direito. Tento encontrar o centro. Onde o barulho das xícaras não alcança."
+            
+        "Mandar mensagem para os amigos para desabafar. (Ousadia +5, Estabilidade +5)":
+            $ theo_ousadia += 5
+            $ theo_estabilidade += 5
+            "Pego o celular. Preciso de gente que fale a minha língua. Gente que não me veja como um diploma ambulante."
+
+    "O brilho do monitor é o meu farol. É aqui que o Theo morre e o enxadrista nasce."
+
+    hide theo_reflexivo with dissolve
+    window hide
+    
+    # Chama o HUB pela primeira vez
+    jump cena_escola_rival
+
+
+
+label cena_escola_rival:
+    scene bg_patio_magnum with fade
+    play music "audio/school_ambience.ogg" fadein 1.0
+
+    "Instituto Magnum. Onde os futuros líderes do país são forjados entre aulas de latim e cálculo avançado."
+    
+    "Acima do mural de carvalho, a placa de ouro polido exibe o lema que justifica cada humilhação sofrida nos corredores:"
+    
+    "{i}'OPTMI SUPRA RELIQUOS'{/i}"
+    
+    "Os melhores acima dos demais. No Magnum, a mediocridade não é apenas uma falha; é um pecado social. E depois do que aconteceu no clube, eu sinto o olhar de todos me empurrando para baixo da linha."
+
+    show leo feliz at pos_leo
+    show luisa normal at pos_luisa # Usando 'Vico' para o amigo para não confundir com o rival Enzo
+    show theo normal at pos_theo
+    
+    l "O 'Magnum Chess Masters'(Jogos Internos) deste ano vai ser no ginásio central, Theo. Ouvi dizer que um Árbitro Internacional vai arbitrar."
+    
+    lu "E parece que o prêmio para o primeiro lugar é uma bolsa integral para o intercâmbio de verão. Seus pais iam adorar isso, hein?"
+
+    t "Eles iam adorar o intercâmbio... mas só se eu passasse o verão estudando Jurisprudência em Harvard."
+
+    # Entrada do Rival
+    play sound "audio/steps_shoes.ogg" # Som de sapatos sociais caros
+    "O ritmo dos passos no corredor muda. É uma cadência precisa, de quem não tem pressa porque sabe que o espaço o pertence."
+    
+    "Enzo se aproxima. Ele não precisa de uniforme personalizado ou de um séquito; sua postura e o relógio de pulso que vale mais que o carro da maioria dos professores dizem tudo o que ele quer que saibamos."
+
+    show enzo_rival at right with moveinright:
+        xalign 0.8
+    
+    enz "Falando em Harvard... ouvi dizer que o 'Rei de Vidro' teve um colapso nervoso no clube por causa de uma xícara de café. Procede, Theo?"
+
+    enz "Eu ia te oferecer um expresso agora, mas fiquei com medo de você derrubar o tabuleiro se a colher bater na borda da xícara."
+
+    menu:
+        "Manter a elegância e não cair na pilha.":
+            $ theo_estabilidade += 10
+            t "A notícia corre rápido, Enzo. Mas não se preocupe, estarei preparado se por ventura nos encontrarmos na final"
+            enz "Nossa, podemos marcar um CAFÉ qualquer dia desses, ops, esqueci, vai que uma xícara caia não é?"
+
+        "Devolver a provocação à altura.":
+            $ theo_ousadia += 10
+            $ theo_foco -= 5
+            t "Engraçado você falar de xadrez de elite, quando todo mundo sabe que você só é titular da equipe porque seu pai doou o novo laboratório de química."
+            "Os olhos de Enzo brilham com uma raiva contida. Acertei no ponto fraco."
+            enz "Cuidado, Theo. Vidro trinca fácil quando a pressão aumenta. E eu vou garantir que o Magnum inteiro veja você se estraçalhar no ginásio."
+
+    
+     
+    enz "O Magnum Chess Masters... um nome que exige perfeição. Algo que parece estar em falta no seu jogo ultimamente, não é, Theo?"
+
+    # Leo (o amigo) intervém
+    l "Corta essa, Enzo. Todo mundo sabe que o Theo em um dia ruim ainda joga o dobro que você. Deixa o cara em paz."
+
+    # enz vira o alvo para o Leo
+    enz "Ah, o fiel escudeiro resolveu se manifestar? É fascinante a coragem que a gratuidade escolar dá para certas pessoas."
+    
+    enz "Diga-me, Leo, sua mãe — a nossa estimada professora de {b}Filosofia{/b} — sabe que você gasta seu tempo de 'cota social' defendendo causas perdidas?"
+    
+    enz "Ou ela está ocupada demais tentando convencer o conselho de que o filho da funcionária merece uma vaga que deveria ser de um aluno pagante?"
+
+    l "O cargo da minha mãe e a minha bolsa não são da sua conta, seu esnobe de merda!"
+    l "Eu posso até não ter as melhores notas, mas pelo menos eu não sou um projeto de ditador que precisa de um relógio de ouro e do sobrenome do papai pra se sentir alguém!"
+
+    "Leo agarra Enzo pelo colarinho"
+
+    # Leo se aproxima ou aponta o dedo, e enz reage com nojo
+    enz "Me larga, seu... seu projeto de marginal!"
+
+    enz "Não encoste em mim com essas mãos de quem limpa o quadro negro depois da aula. Você não tem o direito de respirar o mesmo ar que eu, quanto mais de gritar comigo."
+
+    show leo raiva at center:
+        xalign 0.3 # Leo visivelmente alterado
+    
+    l "Direito? Eu vou te mostrar o meu direito se você falar da minha mãe ou da minha bolsa de novo!"
+
+    # O clima pesa. Vico tenta intervir.
+    lu "Leo, para! Não vale a pena. É isso que ele quer, que você perca a bolsa por agressão!"
+
+    enz "Ouça a garota, bolsista. Ela é mais inteligente que você. Um toque em mim e você está fora do Magnum antes de conseguir soletrar 'Filosofia'."
+
+    # enz se vira para Theo, ignorando Leo como se ele fosse lixo
+    enz "E você, Theo? Vai ficar aí parado assistindo seu cão de guarda latir, ou vai admitir que ele é a única coisa que sobrou do seu prestígio?"
+
+    menu:
+        "Ficar entre os dois e encerrar a briga.":
+            $ theo_estabilidade += 15
+            t "Acabou, Enzo. Some daqui antes que eu decida que a minha reputação vale menos que o prazer de te ver no chão."
+            t "A gente se vê no Magnum Chess Masters. Tente não engasgar com o próprio ego até lá."
+            enz "O vidro está trincando, Theo... eu consigo ouvir daqui."
+
+        "Explodir com Enzo.":
+            $ theo_ousadia += 20
+            $ theo_foco -= 10
+            t "O único 'marginal' aqui é você, que precisa diminuir os outros pra se sentir grande. O Leo vale dez de você, e no torneio, eu vou te enterrar tão fundo que nem o dinheiro do seu pai vai te achar."
+            enz "Que dramático. Guarde esse fôlego para quando você estiver perdendo por tempo no ginásio."
+
+    hide enzo_rival with moveoutright
+    play sound "audio/steps_fast.ogg"
+
+    "Enzo se retira, ajeitando o blazer como se tivesse sido contaminado por estar perto de nós."
+
+    l "Desculpa, Theo... eu perdi a cabeça. É que esse desgraçado sabe onde dói."
+
+    t "Ele é um covarde, Leo. Ele ataca quem ele não consegue vencer no tabuleiro."
+
+    hide enzo_rival with moveoutright
+
+    lu "Minha nossa, esse Enzo é horrível! Ele se acha só porque o pai dele é o dono da {b}Logos S.A.{/b}."
+    
+    lu "Metade dos laboratórios novos do Magnum foram 'doação' da empresa dele. O Enzo age como se fosse o dono do colégio porque, tecnicamente, o pai dele é o dono das paredes onde a gente estuda."
+
+    
+    l "E ele sabe que a diretoria nunca ganharia uma queda de braço com um acionista desse nível. Por isso ele pisa em quem quer."
+
+    t "Ele pode ser dono das paredes, mas o tabuleiro não tem dono. No Magnum Chess Masters, o dinheiro da Logos não move as peças por ele."
+
+    l "Espero que você esteja certo, Theo... Porque se eu perder minha bolsa, minha mãe me mataria. O Magnum não admite erros."
+
+    "O peso da responsabilidade esmaga o que sobrou da minha tranquilidade. Olho para o cartaz do torneio uma última vez."
+    
+    "{i}Optmi Supra Reliquos.{/i}"
+    
+    "Eu preciso ser o melhor. Não só por mim, mas para que o vidro não quebre e leve meus amigos junto."
+
+    window hide
+    stop music fadeout 2.0
+    jump abrir_hub
+
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #Flashback infância
@@ -402,6 +720,67 @@ label flashback_infancia:
 
     jump abrir_hub
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --- SISTEMA DO HUB ---
 
 label abrir_hub:
@@ -432,58 +811,7 @@ label proximo_dia:
 
 # --- LIGAÇÕES ---
 
-screen tela_chat(personagem_nome, personagem_avatar, mensagem_texto):
-    modal True
-    add Solid("#000000cc") # Escurece o fundo do jogo
 
-    # Container principal que centraliza o celular na tela
-    fixed:
-        xalign 0.5 yalign 0.5
-        xsize 500 ysize 900 # Tamanho aproximado da imagem do celular
-
-        # 1. A Imagem do Smartphone
-        add "smartphone" xalign 0.5 yalign 0.5
-
-        # 2. O Conteúdo (alinhado apenas na parte preta da tela)
-        # Ajustamos as margens (padding) para o texto não bater nas bordas da tela preta
-        vbox:
-            xalign 0.5
-            ypos 0.22 # Começa logo abaixo da barra de status (sinal/bateria)
-            xsize 320 # Largura exata da área preta da tela
-            spacing 20
-
-            # Cabeçalho (Avatar e Nome)
-            hbox:
-                spacing 15
-                xalign 0.1
-                add personagem_avatar zoom 0.8 # Diminui o ícone se estiver grande
-                
-                vbox:
-                    yalign 0.5
-                    text "[personagem_nome]" color "#ffffff" size 22 bold True
-                    text "online" color "#4df14d" size 14
-
-            # Área da Mensagem (Balão)
-            frame:
-                background Frame(Solid("#2c3e50"), 10, 10) # Balão escuro
-                padding (15, 15, 15, 15)
-                xsize 300
-                xalign 0.5
-                
-                text "[mensagem_texto]":
-                    color "#ffffff"
-                    size 20
-                    line_spacing 5
-
-            null height 100 # Espaço para o botão não ficar em cima do texto
-
-            # Botão Fechar (Posicionado onde seria o botão "Home" do celular)
-            textbutton "FECHAR":
-                action Return()
-                xalign 0.5
-                ypos 0.85 # Ajusta para ficar perto do círculo branco debaixo
-                style "hub_button"
-                text_size 18
 label conversa_maya:
     if persistent.enzo_derrotado and not msg_enzo_derrotado_lida:
         # Incrementos ANTES da tela
@@ -542,327 +870,10 @@ label conversa_luisa:
 
 
 
-# # --- TORNEIOS ---
-
-# label torneio_escolar:
-#     $ acoes_hoje += 1
-#     "Você entrou no Torneio Escolar. O ginásio está cheio de estudantes."
-#     "Após várias partidas cansativas, você sente que aprendeu muito."
-#     $ theo_rating += 10 
-#     "Seu rating subiu para [theo_rating]!"
-#     jump abrir_hub
-
-# label copa_local:
-#     $ acoes_hoje += 1
-#     "A Copa Local é frequentada pelos veteranos da cidade. O nível é bem mais alto aqui."
-#     jump abrir_hub
-
-# label regional_amador:
-#     $ acoes_hoje += 1
-#     "Viajando para a regional... A pressão é grande."
-#     jump abrir_hub
-
-# label aberto_cidade:
-#     "Torneio Aberto da Cidade em desenvolvimento."
-#     jump abrir_hub
-
-# label estadual_sub20:
-#     "Estadual Sub-20 em desenvolvimento."
-#     jump abrir_hub
-
-# label memorial_mestres:
-#     "Memorial dos Mestres em desenvolvimento."
-#     jump abrir_hub
-
-# label nacional:
-#     "Campeonato Nacional em desenvolvimento."
-#     jump abrir_hub
-
-# label seletiva_inter:
-#     "Seletiva Internacional em desenvolvimento."
-#     jump abrir_hub
-
-# label candidatos:
-#     "Torneio dos Candidatos em desenvolvimento."
-#     jump abrir_hub
-
-# label mundial:
-#     "Campeonato Mundial em desenvolvimento."
-#     jump abrir_hub
-
-
-# Boss Fight 1 (Enzo)
-
-screen interface_duelo_mental():
-    # Esta tela mostra as barras de pressão do Super Trunfo
-    
-    # Barra do Theo (Esquerda)
-    vbox:
-        xalign 0.15 yalign 0.05
-        text "Pressão Theo: [pressao_theo]/10" size 20 color "#ffffff"
-        bar:
-            value AnimatedValue(pressao_theo, 10)
-            xsize 300 ysize 20
-            left_bar Solid("#ff0000") # Vermelho
-            right_bar Solid("#333")
-
-    # Barra do Enzo (Direita)
-    vbox:
-        xalign 0.85 yalign 0.05
-        text "Pressão Enzo: [pressao_enzo]/10" size 20 color "#ffffff"
-        bar:
-            value AnimatedValue(pressao_enzo, 10)
-            xsize 300 ysize 20
-            left_bar Solid("#00ff00") # Verde
-            right_bar Solid("#333")
 
 
 
 
-
-
-
-
-
-
-
-# 1. Coloque isso fora de qualquer label (no topo do script)
-default escolha_jogador = 0
-default correta = 0
-
-label boss_fight_enzo:
-    $ pressao_theo = 0
-    $ pressao_enzo = 0
-    $ perguntas_disponiveis = list(puzzles_xadrez.keys())
-
-    show screen interface_duelo_mental
-    scene bibliotecajogo 
-    show enzo normal at right:
-        zoom 0.7
-        yalign 0.9
-
-    show theo normal at left:
-        zoom 1.1
-        yalign 1
-    
-    enz "O xadrez não é apenas mover peças, Theo. É conhecer a história e as regras."
-
-label loop_quiz:
-    if pressao_theo >= 10:
-        jump derrota_mental_enzo
-    if pressao_enzo >= 10:
-        jump vitoria_mental_enzo
-    
-    if not perguntas_disponiveis:
-        "As perguntas acabaram! Empate técnico."
-        return
-
-    python:
-        pergunta_atual = random.choice(perguntas_disponiveis)
-        perguntas_disponiveis.remove(pergunta_atual)
-        dados = puzzles_xadrez[pergunta_atual]
-        resp_a = dados[0]
-        resp_b = dados[1]
-        resp_c = dados[2]
-        correta = dados[3] # A resposta correta fica guardada aqui
-
-    enz "[pergunta_atual]"
-
-    menu:
-        "[resp_a]":
-            $ escolha_jogador = 0
-            jump checar_resposta
-        "[resp_b]":
-            $ escolha_jogador = 1
-            jump checar_resposta
-        "[resp_c]":
-            $ escolha_jogador = 2
-            jump checar_resposta
-
-label checar_resposta:
-    # Aqui fazemos a comparação fora do menu para evitar o NameError
-    if escolha_jogador == correta:
-        $ pressao_enzo += 1
-        "Resposta correta! Você ganha terreno no tabuleiro."
-        enz "Lógica impecável... continue assim."
-    else:
-        $ pressao_theo += 1
-        with vpunch
-        "Resposta errada! Enzo pune sua falta de conhecimento."
-        enz "Você ainda é um amador, garoto."
-
-    jump loop_quiz
-
-label vitoria_mental_enzo:
-    # ... seus diálogos de vitória aqui ...
-    
-    # GATILHOS DAS MENSAGENS:
-    hide screen interface_duelo_mental
-    $ theo_rating += 150
-    $ theo_foco += 15
-    $ theo_estabilidade += 10
-    $ theo_ousadia += 5
-    $ persistent.enzo_derrotado = True # Nova trava de história
-    $ nova_msg_maya = True
-    $ nova_msg_leo = True
-    # Se a Luisa já foi derrotada, ela também manda mensagem:
-    $ nova_msg_luisa = True
-    $ acoes_hoje += 1  
-    enz "Admito... sua base teórica é superior à minha expectativa."
-    
-    "Você derrotou o mestre da técnica. O silêncio no clube é quebrado apenas pelas notificações no seu bolso."
-    
-    jump abrir_hub # Ou o nome da sua label que chama o Hub
-
-label derrota_mental_enzo:
-    hide screen interface_duelo_mental
-    enz "Estude mais. O tabuleiro não perdoa a ignorância."
-    $ theo_rating -= 250
-    $ theo_foco -= 15
-    $ theo_ousadia -= 20
-    $ theo_estabilidade -= 30
-    $ acoes_hoje += 1 # Conta como uma atividade feita
-    jump abrir_hub
-
-
-#Boss Fight 2 (Luisa)
-
-label calcular_poder_combate:
-    python:
-        # Foco define a base: Foco alto = mais força.
-        # Se foco é 100, base é 40. Se foco é 20, base é 24.
-        base_dano = 20 + (theo_foco * 0.2) 
-        
-        # Estabilidade é o multiplicador (ex: Estabilidade 50 = 1.5x de dano)
-        multiplicador = 1.0 + (theo_estabilidade / 100.0)
-        
-        # Ousadia adiciona um bônus fixo, mas aumenta muito o risco
-        dano_final_theo = int(base_dano * multiplicador + (theo_ousadia * 0.5))
-        
-        # Penalidade de Erro: Se errar, o dano recebido sobe com a Ousadia
-        # Base de erro é 20. Se Ousadia for 100, Theo perde 70 de HP!
-        dano_recebido_theo = 20 + int(theo_ousadia * 0.5)
-    return
-
-
-image flash_vermelho = Solid("#ff0000")
-
-
-label boss_fight_luisa:
-    # 1. Configurações Iniciais e Reset de Status
-    $ theo_hp = theo_max
-    $ luisa_hp = luisa_max
-    $ round_atual = 0
-    
-    # Prepara a lista de puzzles para a luta
-    $ puzzles_disponiveis = lista_puzzles_luisa[:]
-    $ random.shuffle(puzzles_disponiveis)
-
-    # Cenário e Personagens
-    scene bibliotecajogo 
-    show luisa normal at pos_luisa:
-        xalign 1.0 yalign 0.1 zoom 1.9
-    show theo normal at pos_theo:
-        xalign 0.3 yalign 0.1 zoom 1.9
-        
-    lu "Você evoluiu, Theo. Mas vamos ver como sua mente lida com a pressão real."
-
-    # Mostra a interface de HP
-    show screen status_boss_fight
-
-    # 2. Loop de Combate (Dura até alguém zerar o HP)
-    while theo_hp > 0 and luisa_hp > 0:
-        $ round_atual += 1
-
-        # Verifica se precisa recarregar os puzzles
-        if not puzzles_disponiveis:
-            $ puzzles_disponiveis = lista_puzzles_luisa[:]
-            $ random.shuffle(puzzles_disponiveis)
-        
-        # Pega um puzzle e prepara as opções
-        $ puzzle = puzzles_disponiveis.pop()
-        python:
-            opcoes = [[puzzle[2], True], [puzzle[3], False]]
-            random.shuffle(opcoes)
-
-        # Chama a tela do puzzle
-        $ resultado = renpy.call_screen("tela_treinamento", puzzle_atual=puzzle, opcoes_sorteadas=opcoes, mostrar_fundo=False)
-
-        if resultado:
-            # --- LÓGICA DE ACERTO ---
-            python:
-                base_dano = 20 + (theo_foco * 0.2) 
-                multiplicador = 1.0 + (theo_estabilidade / 100.0)
-                dano_final_theo = int((base_dano * multiplicador) + (theo_ousadia * 0.3))
-                
-                luisa_hp -= dano_final_theo
-                theo_estabilidade = min(theo_estabilidade + 5, 100)
-            
-            with hpunch
-            lu "Um movimento preciso! Você causou [dano_final_theo] de dano."
-
-        else:
-            # --- LÓGICA DE ERRO ---
-            python:
-                # Usamos 'store.' para garantir que o diálogo [dano_recebido] funcione
-                penalidade_ousadia = int(theo_ousadia * 0.6)
-                store.dano_recebido = 15 + penalidade_ousadia
-                theo_hp -= store.dano_recebido
-                theo_foco = max(theo_foco - 10, 0)
-                theo_estabilidade = max(theo_estabilidade - 10, 0)
-            
-            show flash_vermelho zorder 100
-            with Dissolve(0.1)
-            
-            show luisa normal at pos_luisa zorder 50
-            
-            hide flash_vermelho
-            with Dissolve(0.2)
-            
-            with vpunch
-            # Agora o Ren'Py vai encontrar a variável store.dano_recebido
-            lu "Sua leitura de jogo foi amadora. Você entregou a posição e agora está pagando o preço: [dano_recebido] de dano!"
-
-        # Verificação de fim de luta dentro do loop para interrupção imediata
-        if theo_hp <= 0:
-            jump derrota_boss
-        if luisa_hp <= 0:
-            jump vitoria_boss
-
-    return
-
-# --- RESULTADOS ---
-
-label vitoria_boss:
-    hide screen status_boss_fight
-    show luisa raiva # Expressão de quem perdeu
-    lu "Incrível... Xeque-mate. Você me venceu, Theo."
-    $ persistent.luisa_derrotada = True
-    $ theo_rating += 100
-    $ theo_ousadia += 15
-    $ nova_msg_maya = True
-    $ nova_msg_leo = True
-    $ nova_msg_luisa = True
-    $ acoes_hoje += 1 
-    "Vitória épica! Luísa reconhece seu talento. Rating +100."
-   
-    jump abrir_hub
-
-
-label derrota_boss:
-    "Suas energias se esgotaram e você não consegue mais manter a concentração no tabuleiro."
-    "O adversário percebe sua hesitação e finaliza a partida com precisão."
-    "Theo: (Droga... eu preciso estudar mais a tática deles...)"
-    
-    # Penalidade leve para dar peso à derrota
-    $ theo_foco = max(10, theo_foco - 10)
-    $ acoes_hoje += 1 
-    $ theo_rating -= 150
-    $ theo_ousadia -= 20
-    $ theo_foco -= 10
-    $ theo_estabilidade -= 10
-    # Faz o jogo voltar para o mapa principal
-    jump abrir_hub
 
 
 

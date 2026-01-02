@@ -141,18 +141,21 @@ init python:
 
 # No arquivo listas.rpy (fora de qualquer bloco python)
     
-init python:
-    
-    lista_torneios = [
-    ("Desafio dos Enzos", 0, "boss_fight_enzo"),
-    ("Desafio da Luísa", 1000, "boss_fight_luisa"),
-    ("Copa Local", 1200, "copa_local"),
-    ("Regional Amador", 1400, "regional_amador"),
-    ("Aberto da Cidade", 1600, "aberto_cidade"),
-    ("Estadual Sub-20", 1800, "estadual_sub20"),
-    ("Memorial dos Mestres", 2000, "memorial_mestres"),
-    ("Campeonato Nacional", 2200, "nacional"),
-    ("Seletiva Internacional", 2400, "seletiva_inter"),
-    ("Torneio dos Candidatos", 2600, "candidatos"),
-    ("Campeonato Mundial", 2800, "mundial")
+# Lista mestra de torneios
+# Formato: ("Nome", Rating Necessário, "Label de Destino", "Nome da Variável de Vitória")
+default lista_torneios = [
+    ("Desafio do Enzo", 0, "boss_fight_enzo", "enzo_vencido"),
+    ("Desafio da Luísa", 1000, "boss_fight_luisa", "luisa_vencida"),
+    ("Copa Local", 1200, "copa_local", "copa_local_vencida"),
+    ("Regional Amador", 1400, "regional_amador", "regional_vencido"),
+    ("Aberto da Cidade", 1600, "aberto_cidade", "aberto_cidade_vencido"),
+    ("Estadual Sub-20", 1800, "estadual_sub20", "estadual_vencido"),
+    ("Memorial dos Mestres", 2000, "memorial_mestres", "memorial_vencido"),
+    ("Campeonato Nacional", 2200, "nacional", "nacional_vencido"),
+    ("Seletiva Internacional", 2400, "seletiva_inter", "seletiva_vencido"),
+    ("Torneio dos Candidatos", 2600, "candidatos", "candidatos_vencido"),
+    ("Campeonato Mundial", 2800, "mundial", "mundial_vencido")
 ]
+
+
+

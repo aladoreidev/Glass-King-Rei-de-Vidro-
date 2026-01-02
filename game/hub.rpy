@@ -126,7 +126,7 @@ screen tela_torneios():
                             textbutton "🔒 [nome] (Bloqueado: [rating_req])":
                                 action None
                                 xfill True
-                                sensitive False
+                                sensitive False 
 
             null height 20
             textbutton "Fechar":

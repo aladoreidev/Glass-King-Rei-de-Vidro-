@@ -53,3 +53,86 @@ screen status_boss_fight():
                 left_bar Solid("#96281b") # Fundo
                 right_bar Solid("#2ecc71") # Vida
             text "[luisa_hp] / [luisa_max]" size 18 xalign 0.5
+
+
+
+
+# --- SCREEN DO PUZZLE (Apenas para garantir que funcione se não estiver em outro arquivo) ---
+screen puzzle_guardanapo_circles():
+    zorder 100
+    modal True
+    vbox:
+        xalign 0.95 yalign 0.2 spacing 20
+        add "desafioguardanapo" zoom 0.45
+        hbox:
+            xalign 0.5 spacing 15
+            button:
+                action Jump("mate_correto")
+                background Frame(Solid("#4CAF50"), 0, 0)
+                xminimum 120 yminimum 120 padding (5, 5)
+                text "Dxf7+" align (0.5, 0.5) size 18 color "#fff" bold True
+            button:
+                action Jump("erro_bispo")
+                background Frame(Solid("#F44336"), 0, 0)
+                xminimum 120 yminimum 120 padding (5, 5)
+                text "Bxf7+" align (0.5, 0.5) size 18 color "#fff" bold True
+            button:
+                action Jump("erro_torre")
+                background Frame(Solid("#2196F3"), 0, 0)
+                xminimum 120 yminimum 120 padding (5, 5)
+                text "Tf8" align (0.5, 0.5) size 18 color "#fff" bold True
+
+
+
+screen tela_chat(personagem_nome, personagem_avatar, mensagem_texto):
+    modal True
+    add Solid("#000000cc") # Escurece o fundo do jogo
+
+    # Container principal que centraliza o celular na tela
+    fixed:
+        xalign 0.5 yalign 0.5
+        xsize 500 ysize 900 # Tamanho aproximado da imagem do celular
+
+        # 1. A Imagem do Smartphone
+        add "smartphone" xalign 0.5 yalign 0.5
+
+        # 2. O Conteúdo (alinhado apenas na parte preta da tela)
+        # Ajustamos as margens (padding) para o texto não bater nas bordas da tela preta
+        vbox:
+            xalign 0.5
+            ypos 0.22 # Começa logo abaixo da barra de status (sinal/bateria)
+            xsize 320 # Largura exata da área preta da tela
+            spacing 20
+
+            # Cabeçalho (Avatar e Nome)
+            hbox:
+                spacing 15
+                xalign 0.1
+                add personagem_avatar zoom 0.8 # Diminui o ícone se estiver grande
+                
+                vbox:
+                    yalign 0.5
+                    text "[personagem_nome]" color "#ffffff" size 22 bold True
+                    text "online" color "#4df14d" size 14
+
+            # Área da Mensagem (Balão)
+            frame:
+                background Frame(Solid("#2c3e50"), 10, 10) # Balão escuro
+                padding (15, 15, 15, 15)
+                xsize 300
+                xalign 0.5
+                
+                text "[mensagem_texto]":
+                    color "#ffffff"
+                    size 20
+                    line_spacing 5
+
+            null height 100 # Espaço para o botão não ficar em cima do texto
+
+            # Botão Fechar (Posicionado onde seria o botão "Home" do celular)
+            textbutton "FECHAR":
+                action Return()
+                xalign 0.5
+                ypos 0.85 # Ajusta para ficar perto do círculo branco debaixo
+                style "hub_button"
+                text_size 18
