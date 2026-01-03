@@ -204,23 +204,20 @@ style input:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#choice
 
-screen choice(items):
+screen choice(items, menu_y=0.5): # O 0.5 é o valor padrão (meio da tela)
     style_prefix "choice"
 
     vbox:
+        xalign 0.5
+        yalign menu_y # Agora usamos a variável diretamente
+        spacing gui.choice_spacing
+
         for i in items:
             textbutton i.caption action i.action
 
-
-style choice_vbox is vbox
-style choice_button is button
-style choice_button_text is button_text
-
-style choice_vbox:
+style choice_vbox is vbox:
     xalign 0.5
-    ypos 270
-    yanchor 0.5
-
+    # Removemos o ypos fixo daqui para ele não travar o menu no topo
     spacing gui.choice_spacing
 
 style choice_button is default:

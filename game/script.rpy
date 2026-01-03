@@ -97,10 +97,11 @@ label start:
     #jump cena_derrota_clube
     #jump boss_fight_luisa
     #jump boss_fight_enzo
-    jump abrir_hub
+    #jump abrir_hub
     #jump convidar_maya_para_role
     #jump encontro_amigos_pos_derrota
     #jump cena_escola_rival
+    jump boss_fight_xadrez
 
 # 3. Cena do Clube
 label cena_derrota_clube:
@@ -448,228 +449,13 @@ label pos_jantar_quarto:
             "Pego o celular. Preciso de gente que fale a minha língua. Gente que não me veja como um diploma ambulante."
 
     "O brilho do monitor é o meu farol. É aqui que o Theo morre e o enxadrista nasce."
+    "Os olhos de Theo começam e se fechar e sua mente é tomada por uma lembrança de sua infância..."
 
     hide theo_reflexivo with dissolve
     window hide
     
-    # Chama o HUB pela primeira vez
-    jump cena_escola_rival
-
-
-
-label cena_escola_rival:
-    scene bg_patio_magnum with fade
-    play music "audio/school_ambience.ogg" fadein 1.0
-
-    "Instituto Magnum. Onde os futuros líderes do país são forjados entre aulas de latim e cálculo avançado."
     
-    "Acima do mural de carvalho, a placa de ouro polido exibe o lema que justifica cada humilhação sofrida nos corredores:"
-    
-    "{i}'OPTMI SUPRA RELIQUOS'{/i}"
-    
-    "Os melhores acima dos demais. No Magnum, a mediocridade não é apenas uma falha; é um pecado social. E depois do que aconteceu no clube, eu sinto o olhar de todos me empurrando para baixo da linha."
-
-    show leo feliz at pos_leo
-    show luisa normal at pos_luisa # Usando 'Vico' para o amigo para não confundir com o rival Enzo
-    show theo normal at pos_theo
-    
-    l "O 'Magnum Chess Masters'(Jogos Internos) deste ano vai ser no ginásio central, Theo. Ouvi dizer que um Árbitro Internacional vai arbitrar."
-    
-    lu "E parece que o prêmio para o primeiro lugar é uma bolsa integral para o intercâmbio de verão. Seus pais iam adorar isso, hein?"
-
-    t "Eles iam adorar o intercâmbio... mas só se eu passasse o verão estudando Jurisprudência em Harvard."
-
-    # Entrada do Rival
-    play sound "audio/steps_shoes.ogg" # Som de sapatos sociais caros
-    "O ritmo dos passos no corredor muda. É uma cadência precisa, de quem não tem pressa porque sabe que o espaço o pertence."
-    
-    "Enzo se aproxima. Ele não precisa de uniforme personalizado ou de um séquito; sua postura e o relógio de pulso que vale mais que o carro da maioria dos professores dizem tudo o que ele quer que saibamos."
-
-    show enzo_rival at right with moveinright:
-        xalign 0.8
-    
-    enz "Falando em Harvard... ouvi dizer que o 'Rei de Vidro' teve um colapso nervoso no clube por causa de uma xícara de café. Procede, Theo?"
-
-    enz "Eu ia te oferecer um expresso agora, mas fiquei com medo de você derrubar o tabuleiro se a colher bater na borda da xícara."
-
-    menu:
-        "Manter a elegância e não cair na pilha.":
-            $ theo_estabilidade += 10
-            t "A notícia corre rápido, Enzo. Mas não se preocupe, estarei preparado se por ventura nos encontrarmos na final"
-            enz "Nossa, podemos marcar um CAFÉ qualquer dia desses, ops, esqueci, vai que uma xícara caia não é?"
-
-        "Devolver a provocação à altura.":
-            $ theo_ousadia += 10
-            $ theo_foco -= 5
-            t "Engraçado você falar de xadrez de elite, quando todo mundo sabe que você só é titular da equipe porque seu pai doou o novo laboratório de química."
-            "Os olhos de Enzo brilham com uma raiva contida. Acertei no ponto fraco."
-            enz "Cuidado, Theo. Vidro trinca fácil quando a pressão aumenta. E eu vou garantir que o Magnum inteiro veja você se estraçalhar no ginásio."
-
-    
-     
-    enz "O Magnum Chess Masters... um nome que exige perfeição. Algo que parece estar em falta no seu jogo ultimamente, não é, Theo?"
-
-    # Leo (o amigo) intervém
-    l "Corta essa, Enzo. Todo mundo sabe que o Theo em um dia ruim ainda joga o dobro que você. Deixa o cara em paz."
-
-    # enz vira o alvo para o Leo
-    enz "Ah, o fiel escudeiro resolveu se manifestar? É fascinante a coragem que a gratuidade escolar dá para certas pessoas."
-    
-    enz "Diga-me, Leo, sua mãe — a nossa estimada professora de {b}Filosofia{/b} — sabe que você gasta seu tempo de 'cota social' defendendo causas perdidas?"
-    
-    enz "Ou ela está ocupada demais tentando convencer o conselho de que o filho da funcionária merece uma vaga que deveria ser de um aluno pagante?"
-
-    l "O cargo da minha mãe e a minha bolsa não são da sua conta, seu esnobe de merda!"
-    l "Eu posso até não ter as melhores notas, mas pelo menos eu não sou um projeto de ditador que precisa de um relógio de ouro e do sobrenome do papai pra se sentir alguém!"
-
-    "Leo agarra Enzo pelo colarinho"
-
-    # Leo se aproxima ou aponta o dedo, e enz reage com nojo
-    enz "Me larga, seu... seu projeto de marginal!"
-
-    enz "Não encoste em mim com essas mãos de quem limpa o quadro negro depois da aula. Você não tem o direito de respirar o mesmo ar que eu, quanto mais de gritar comigo."
-
-    show leo raiva at center:
-        xalign 0.3 # Leo visivelmente alterado
-    
-    l "Direito? Eu vou te mostrar o meu direito se você falar da minha mãe ou da minha bolsa de novo!"
-
-    # O clima pesa. Vico tenta intervir.
-    lu "Leo, para! Não vale a pena. É isso que ele quer, que você perca a bolsa por agressão!"
-
-    enz "Ouça a garota, bolsista. Ela é mais inteligente que você. Um toque em mim e você está fora do Magnum antes de conseguir soletrar 'Filosofia'."
-
-    # enz se vira para Theo, ignorando Leo como se ele fosse lixo
-    enz "E você, Theo? Vai ficar aí parado assistindo seu cão de guarda latir, ou vai admitir que ele é a única coisa que sobrou do seu prestígio?"
-
-    menu:
-        "Ficar entre os dois e encerrar a briga.":
-            $ theo_estabilidade += 15
-            t "Acabou, Enzo. Some daqui antes que eu decida que a minha reputação vale menos que o prazer de te ver no chão."
-            t "A gente se vê no Magnum Chess Masters. Tente não engasgar com o próprio ego até lá."
-            enz "O vidro está trincando, Theo... eu consigo ouvir daqui."
-
-        "Explodir com Enzo.":
-            $ theo_ousadia += 20
-            $ theo_foco -= 10
-            t "O único 'marginal' aqui é você, que precisa diminuir os outros pra se sentir grande. O Leo vale dez de você, e no torneio, eu vou te enterrar tão fundo que nem o dinheiro do seu pai vai te achar."
-            enz "Que dramático. Guarde esse fôlego para quando você estiver perdendo por tempo no ginásio."
-
-    hide enzo_rival with moveoutright
-    play sound "audio/steps_fast.ogg"
-
-    "Enzo se retira, ajeitando o blazer como se tivesse sido contaminado por estar perto de nós."
-
-    l "Desculpa, Theo... eu perdi a cabeça. É que esse desgraçado sabe onde dói."
-
-    t "Ele é um covarde, Leo. Ele ataca quem ele não consegue vencer no tabuleiro."
-
-    hide enzo_rival with moveoutright
-
-    lu "Minha nossa, esse Enzo é horrível! Ele se acha só porque o pai dele é o dono da {b}Logos S.A.{/b}."
-    
-    lu "Metade dos laboratórios novos do Magnum foram 'doação' da empresa dele. O Enzo age como se fosse o dono do colégio porque, tecnicamente, o pai dele é o dono das paredes onde a gente estuda."
-
-    
-    l "E ele sabe que a diretoria nunca ganharia uma queda de braço com um acionista desse nível. Por isso ele pisa em quem quer."
-
-    t "Ele pode ser dono das paredes, mas o tabuleiro não tem dono. No Magnum Chess Masters, o dinheiro da Logos não move as peças por ele."
-
-    l "Espero que você esteja certo, Theo... Porque se eu perder minha bolsa, minha mãe me mataria. O Magnum não admite erros."
-
-    "O peso da responsabilidade esmaga o que sobrou da minha tranquilidade. Olho para o cartaz do torneio uma última vez."
-    
-    "{i}Optmi Supra Reliquos.{/i}"
-    
-    "Eu preciso ser o melhor. Não só por mim, mas para que o vidro não quebre e leve meus amigos junto."
-
-    window hide
-    stop music fadeout 2.0
-    jump abrir_hub
-
-    
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    jump flashback_infancia
 
 
 #Flashback infância
@@ -718,99 +504,371 @@ label flashback_infancia:
 
     $ theo_estabilidade -= 30
 
+    jump cena_escola_rival
+
+
+
+label cena_escola_rival:
+    scene bg_patio_magnum with fade
+    play music "audio/school_ambience.ogg" fadein 1.0
+
+    "Instituto Magnum. Onde os futuros líderes do país são forjados entre aulas de latim e cálculo avançado."
+    
+    "Acima do mural de carvalho, a placa de ouro polido exibe o lema que justifica cada humilhação sofrida nos corredores:"
+    
+    "{i}'OPTMI SUPRA RELIQUOS'{/i}"
+    
+    "Os melhores acima dos demais. No Magnum, a mediocridade não é apenas uma falha; é um pecado social. E depois do que aconteceu no clube, eu sinto o olhar de todos me empurrando para baixo da linha."
+
+   # Define as posições primeiro sem mostrar nada
+    show leo normal at leo_busto:
+        xalign 0.1
+    show luisa normal at luisa_busto:
+        xalign 0.5
+    show theo normal at theo_busto:
+        xalign 0.9
+
+    # Aplica a transição suave de entrada para todos de uma vez
+    with easeinbottom
+    
+    l "O 'Magnum Chess Masters'(Jogos Internos) deste ano vai ser no ginásio central, Theo. Ouvi dizer que um Árbitro Internacional vai arbitrar."
+    
+    lu "E parece que o prêmio para o primeiro lugar é uma bolsa integral para o intercâmbio de verão. Seus pais iam adorar isso, hein?"
+
+    t "Eles iam adorar o intercâmbio... mas só se eu passasse o verão estudando Jurisprudência em Harvard."
+
+    # Entrada do Rival
+    play sound "audio/steps_shoes.ogg" # Som de sapatos sociais caros
+    "O ritmo dos passos no corredor muda. É uma cadência precisa, de quem não tem pressa porque sabe que o espaço o pertence."
+    
+    "Enzo se aproxima. Ele não precisa de uniforme personalizado ou de um séquito; sua postura e o relógio de pulso que vale mais que o carro da maioria dos professores dizem tudo o que ele quer que saibamos."
+
+    show enzo normal at right with moveinright:
+        xalign 0.8
+    show leo raiva at leo_busto
+    show luisa triste at luisa_busto 
+    show theo raiva at theo_busto
+    with dissolve
+
+
+    enz "Falando em Harvard... ouvi dizer que o 'Rei de Vidro' teve um colapso nervoso no clube por causa de uma xícara de café. Procede, Theo?"
+
+    enz "Eu ia te oferecer um expresso agora, mas fiquei com medo de você derrubar o tabuleiro se a colher bater na borda da xícara."
+
+   
+
+    # Saída suave da Luísa e do Leo (primeira aparição)
+    hide luisa
+    hide leo
+    with dissolve
+
+    # Theo se move suavemente para a posição do menu
+    show theo raiva:
+        ease 0.5 xalign 0.0 zoom 0.65 # 'ease' é mais suave que 'linear'
+
+    
+    show enzo pensativo: 
+        zoom 0.85
+
+    menu (menu_y=0.8):
+        "Manter a elegância e não cair na pilha.":
+            $ theo_estabilidade += 10
+            t "A notícia corre rápido, Enzo. Mas não se preocupe, estarei preparado se por ventura nos encontrarmos na final"
+            enz "Nossa, podemos marcar um CAFÉ qualquer dia desses, ops, esqueci, vai que uma xícara caia não é?"
+
+        "Devolver a provocação à altura.":
+            $ theo_ousadia += 10
+            $ theo_foco -= 5
+            t "Engraçado você falar de xadrez de elite, quando todo mundo sabe que você só é titular da equipe porque seu pai doou o novo laboratório de química."
+            "Os olhos de Enzo brilham com uma raiva contida. Acertei no ponto fraco."
+            enz "Cuidado, Theo. Vidro trinca fácil quando a pressão aumenta. E eu vou garantir que o Magnum inteiro veja você se estraçalhar no ginásio."
+
+    # --- TRANSIÇÃO SUAVE ---
+    
+    # Saída suave do Theo deslizando para a esquerda
+    hide theo with easeoutleft 
+
+    # Entrada suave do Leo com as configurações que definimos
+    show leo raiva at leo_busto:
+        xpos 0.1
+        zoom 1.1
+        yoffset 50
+    with easeinleft 
+
+    l "Theo, não perde tempo com esse lixo! Enzo, você acha que o dinheiro do seu pai conserta seu caráter?"
+    
+    enz "Olha o bolsista tentando latir. Por que você não vai engraxar meus sapatos, Leo? Pelo menos assim você seria útil."
+
+         
+    enz "O Magnum Chess Masters... um nome que exige perfeição e elegância. Algo que parece estar em falta no seu jogo ultimamente, não é, Theo?"
+
+    # Leo (o amigo) intervém
+    l "Corta essa, seu cara de Bosta. Todo mundo sabe que o Theo em um dia ruim ainda joga o dobro que você. Deixa o cara em paz."
+
+    # enz vira o alvo para o Leo
+    enz "Ah, o fiel escudeiro resolveu se manifestar? É fascinante a coragem que a gratuidade escolar dá para certas pessoas."
+    
+    enz "Diga-me, Leo, sua mãe — a nossa estimada professora de {b}Filosofia{/b} — sabe que você gasta seu tempo de 'cota social' defendendo causas perdidas?"
+    
+    enz "Ou ela está ocupada demais tentando convencer o conselho de que o filho da funcionária merece uma vaga que deveria ser de um aluno pagante?"
+
+    # Escurece as bordas da tela para focar no conflito
+    show layer master:
+        matrixcolor TintMatrix("#ccc") * SaturationMatrix(0.9)
+    with dissolve
+
+    l "O cargo da minha mãe e a minha bolsa não são da sua conta, seu esnobe de merda!"
+    l "Eu posso até não ter as melhores notas, mas pelo menos eu não sou um projeto de ditador que precisa de um relógio de ouro e do sobrenome do papai pra se sentir alguém!"
+
+    "Leo perde o controle e avança."
+    play sound "audio/grab.ogg" # Som de pano sendo puxado
+    with hpunch # Treme a tela horizontalmente
+    "Leo agarra Enzo pelo colarinho com uma força que faz o herdeiro perder o equilíbrio por um segundo."
+
+    show enzo raiva:
+        zoom 0.9
+        xalign 0.75
+        
+
+
+    # Leo se aproxima ou aponta o dedo, e enz reage com nojo
+    enz "Me larga, seu... seu projeto de marginal!"
+
+    enz "Não encoste em mim com essas mãos de quem limpa os banheiros da escola depois da aula. Você não tem o direito de respirar o mesmo ar que eu, quanto mais de gritar comigo."
+
+
+    
+
+    l "Direito? Eu vou te mostrar o meu direito se você falar da minha mãe ou da minha bolsa de novo!"
+
+    show luisa normal at luisa_busto:
+        xpos 0.99
+        zoom 1.1
+        yoffset 50
+    with easeinright 
+
+    # O clima pesa. Vico tenta intervir.
+    lu "Leo, para! Não vale a pena. É isso que ele quer, que você perca a bolsa por agressão!"
+  
+
+    enz "Ouça a garota, bolsista. Ela é mais inteligente que você. Um toque em mim e você está fora do Magnum antes de conseguir soletrar 'Filosofia'."
+
+    # enz se vira para Theo, ignorando Leo como se ele fosse lixo
+    enz "E você, Theo? Vai ficar aí parado assistindo seu cão de guarda latir, ou vai admitir que ele é a única coisa que sobrou do seu prestígio?"
+
+
+    
+    hide luisa with easeoutright
+
+    # O Theo se move e cresce ANTES do jogador escolher, 
+    # criando o clima de "hora da decisão".
+    show theo raiva at theo_busto:
+        ease 0.5 xpos 0.5 zoom 1.3 yoffset 200
+
+    show enzo raiva:
+        ease 0.5 xpos 0.86 
+
+    menu:
+        "Ficar entre os dois e encerrar a briga.":
+            $ theo_estabilidade += 15
+            t "Acabou, Enzo. Some daqui antes que eu decida que a minha reputação vale menos que o prazer de te ver no chão."
+            t "A gente se vê no Magnum Chess Masters. Tente não engasgar com o próprio ego até lá."
+            
+            # Enzo reage antes de sair
+            show enzo raiva:
+                ease 0.2 xoffset 10 # Um pequeno tremor de raiva
+            enz "O vidro está trincando, Theo... eu consigo ouvir daqui."
+
+        "Explodir com Enzo.":
+            $ theo_ousadia += 20
+            $ theo_foco -= 10
+            # Efeito de Flash para a explosão de raiva
+            show white onlayer overlay:
+                alpha 0.6
+                linear 0.2 alpha 0.0
+                
+            t "O único 'marginal' aqui é você, que precisa diminuir os outros pra se sentir grande!"
+            t "O Leo vale dez de você, e no torneio, eu vou te enterrar tão fundo que nem o dinheiro do seu pai vai te achar."
+            enz "Que dramático. Guarde esse fôlego para quando você estiver perdendo por tempo no ginásio."
+
+    # Após o menu, voltamos o Theo para o tamanho normal para seguir a cena
+    show theo normal at theo_busto:
+        ease 0.5 xpos 0.86 zoom 1.1 yoffset 50
+
+    hide enzo with moveoutright
+    play sound "audio/steps_fast.ogg"
+
+    "Enzo se retira, ajeitando o blazer como se tivesse sido contaminado por estar perto de nós."
+
+    l "Desculpa, Theo... eu perdi a cabeça. É que esse desgraçado sabe onde dói."
+
+    t "Ele é um covarde, Leo. Ele ataca quem ele não consegue vencer no tabuleiro."
+
+    show luisa raiva at luisa_busto:
+        xpos 0.7
+        zoom 1.1
+        yoffset 50
+    with easeinleft 
+    
+
+    lu "Minha nossa, esse Enzo é horrível! Ele se acha só porque o pai dele é o dono da {b}Logos S.A.{/b}."
+    
+    lu "Metade dos laboratórios novos do Magnum foram 'doação' da empresa dele. O Enzo age como se fosse o dono do colégio porque, tecnicamente, o pai dele é o dono das paredes onde a gente estuda."
+
+    
+    l "E ele sabe que a diretoria nunca ganharia uma queda de braço com um acionista desse nível. Por isso ele pisa em quem quer."
+
+    t "Ele pode ser dono das paredes, mas o tabuleiro não tem dono. No Magnum Chess Masters, o dinheiro da Logos não move as peças por ele."
+
+    l "Espero que você esteja certo, Theo... Porque se eu perder minha bolsa, minha mãe me mataria. O Magnum não admite erros."
+
+    "O peso da responsabilidade esmaga o que sobrou da minha tranquilidade. Olho para o cartaz do torneio uma última vez."
+    
+    "{i}Optmi Supra Reliquos.{/i}"
+    
+    "Eu preciso ser o melhor. Não só por mim, mas para que o vidro não quebre e leve meus amigos junto."
+
+    window hide
+    stop music fadeout 3.0
+    
+    # Tela fica preta e o lema aparece no centro
+    scene black with Dissolve(2.0)
+    pause 1.0
+    show text "{i}{size=60}Optmi Supra Reliquos.{/size}{/i}" at truecenter with dissolve
+    pause 2.0
+    hide text with dissolve
+    
+    # Remove os efeitos de cor que aplicamos antes
+    show layer master:
+        matrixcolor IdentityMatrix()
+        
+    jump abrir_hub
+    window hide
+    with dissolve
+    
+    stop music fadeout 2.0
     jump abrir_hub
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# --- SISTEMA DO HUB ---
 
 label abrir_hub:
+    # 1. Limpa qualquer resquício de personagens ou telas anteriores
+    $ renpy.free_memory() 
+    
+    # 2. Transição de entrada: 'with fade' faz o efeito de fechar/abrir os olhos
     scene singlebedroom with fade 
+    
+    # 3. Chama a tela do quarto
     call screen hub_principal
-    return
 
-label preparar_treino:
-    if acoes_hoje >= 2:
-        t "Já fiz muita coisa hoje, estou exausto. Melhor ir dormir."
-        jump abrir_hub
+    
+label cena_pos_vitoria_enzo:
+    scene bibliotecajogo with hpunch
+    
+    
+    show theo feliz at left
+    show leo feliz at center
+    show maya feliz at left
+    show luisa feliz
+    with dissolve
 
-    if theo_foco < 20:
-        t "Estou sem foco para treinar agora..."
-        jump abrir_hub
+    l "EU SABIA! Theo, você não jogou xadrez, você deu uma aula de etiqueta! O Enzo saiu tão humilhado que eu achei que ele ia pedir desculpas por existir!"
+    
+    lu "Menos, Leo. O Theo cometeu uma imprecisão grave na abertura. Se o Enzo não fosse tão arrogante, teria punido o cavalo em C6."
 
-    # Se passou nas verificações acima, o treino começa:
+    ma "ISSO! Theo, você foi impecável!"
+    l "Ah, Luísa, deixa disso! Ele venceu o cara mais pé no saco da escola. Hoje é dia de comemorar, não de revisar planilha!"
+    
+    # 2. A CHEGADA DO ENZO (Clima pesado)
+    show enzo raiva at pos_luisa with easeinright
+    
+    enz "Riam enquanto podem. Aproveitem esse 'golpe de sorte' para se sentirem importantes por cinco minutos."
+
+    show leo feliz
+    l "Sorte? Enzo, sua cara de quem engoliu um limão mofado diz que foi puro talento. Quer um lenço?"
+
+    # 3. A TRETA E A AMEAÇA
+    show enzo raiva:
+        xalign 0.7 zoom 2.2
+    with EaseIn(0.5)
+
+    enz "Você fala demais para alguém que depende da caridade da diretoria, Leo. Onde você vai fazer suas piadinhas quando sua bolsa for cancelada semana que vem?"
+    
+    show leo triste
+    le "O-o quê? Você tá louco? Eu vou arrebentar sua cara!"
+
+    enz "Se você encostar suas mãos imundas em mim, será seu fim."
+
+    with hpunch
+    "Leo avança um passo, fechando os punhos. Maya tenta segurá-lo, sem sucesso."
+
+    # Efeito sonoro de soco (se você tiver) e tremor de tela
+    play sound "audio/soco.mp3"
+    with vpunch
+    "{b}PUNCH!{/b} Leo acerta um soco em cheio no nariz de Enzo!"
+
+    show enzo choque at right:
+        xoffset 20
+    "O impacto joga a cabeça de Enzo para trás. O sangue começa a escorrer instantaneamente."
+
+    "Os dois garotos que estavam com Enzo entram na confusão, avançando contra Leo!"
+
+    # --- MENU DE DECISÃO DO THEO ---
+    menu:
+        "O que você vai fazer?"
+
+        "Entrar na briga para defender o Leo":
+            $ theo_ousadia += 15
+            $ theo_estabilidade -= 10
+            "Você não pensa duas vezes. Se o Leo vai cair, você cai com ele!"
+            show theo raiva at center with easeinleft
+            "Você se joga na frente de um dos amigos de Enzo, empurrando-o com força."
+            t "Tira a mão dele! Se quiserem bater em alguém, batam em mim!"
+            "O Ginásio vira um caos de empurrões e gritos."
+
+        "Tentar separar a briga e apaziguar":
+            $ theo_foco += 10
+            $ theo_estabilidade += 5
+            "Você corre para o meio do conflito, tentando criar uma barreira entre eles."
+            t "PAROU! Leo, solta ele! Enzo, recua agora!"
+            show maya triste
+            ma "Theo, me ajuda! Eles vão se matar!"
+            "Você segura Leo pelo ombro, tentando forçá-lo a olhar para você e recuperar a razão."
+            lu "Leo, cuidado!!!"
+
+        "Ficar paralisado pelo choque (Instabilidade)":
+            $ theo_estabilidade -= 20
+            $ theo_foco -= 10
+            "Seu coração dispara. O som do soco ecoa na sua mente e você simplesmente trava."
+            "As vozes ao redor parecem abafadas. Você vê a bolsa do Leo e o futuro de vocês escorrendo junto com o sangue no chão."
+            ma "THEO! NÃO FICA AÍ PARADO! FAZ ALGUMA COISA!"
+            lu "THEO! VOCÊ PRECISA AJUDÁ-LO"
+
+    # --- A CHEGADA DOS INSPETORES ---
+    "O som de um apito estridente corta o barulho da briga."
+
+    show inspetor_npc at center with moveintop
+    
+    ins "{b}PAREM AGORA!{/b}"
+    
+    ins "Theo, Leo, Enzo e os demais... PARA A DIRETORIA! AGORA!"
+
+    show enzo raiva:
+        xalign 0.7 zoom 2.2
+    enz "Ele me agrediu! Vocês viram! Eu vou processar esse animal e garantir que ele nunca mais pise em uma escola!"
+
+    show leo triste
+    "Leo olha para as próprias mãos, tremendo. A ficha do que ele acabou de fazer começa a cair."
+
     $ acoes_hoje += 1
-       
-    jump hub_treinar
 
-label proximo_dia:
-    #$ theo_foco = 100
-    $ acoes_hoje = 0 
-    scene black with fade
-    "Você descansou e o dia passou..."
+
     jump abrir_hub
 
-# --- LIGAÇÕES ---
+  
 
+   
 
 label conversa_maya:
     if persistent.enzo_derrotado and not msg_enzo_derrotado_lida:

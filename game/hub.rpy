@@ -33,6 +33,7 @@ screen hub_principal():
         at prop_style
         focus_mask True
         action Jump("hub_treinar")
+        
 
     # SMARTPHONE
     imagebutton:
@@ -51,6 +52,7 @@ screen hub_principal():
         at prop_style
         focus_mask True
         action Show("tela_torneios")
+        
 
     # LAPTOP (Zoom 1.4)
     imagebutton:
@@ -59,7 +61,8 @@ screen hub_principal():
         xpos 301 ypos 77 
         at prop_style, Transform(zoom=1.4) 
         focus_mask True
-        action Jump("usar_laptop")
+        # O Action sempre leva para a label; a label decide se deixa jogar ou se dá o aviso
+        action Jump("hub_laptop_blitz")
 
     # RETRATOS
     imagebutton:
@@ -69,6 +72,7 @@ screen hub_principal():
         at prop_style
         focus_mask True
         action Jump("olhar_foto_luisa")
+        
 
     imagebutton:
         idle "props/mayaretrato.png"
@@ -77,6 +81,7 @@ screen hub_principal():
         at prop_style
         focus_mask True
         action Jump("olhar_foto_maya")
+        
 
     imagebutton:
         idle "props/leoretrato.png"
@@ -85,6 +90,7 @@ screen hub_principal():
         at prop_style
         focus_mask True
         action Jump("olhar_foto_leo")
+        
 
     # TROFÉU / QUADRO (Para ver Stats)
     imagebutton:
@@ -108,69 +114,10 @@ screen hub_principal():
         focus_mask True
         action Jump("confirmar_passar_dia")
 
-# ==========================================
-# 3. SUA SCREEN DE CHAT (RESTAURADA)
-# ==========================================
-screen tela_chat(personagem_nome, personagem_avatar, mensagem_texto):
-    modal True
-    add Solid("#000000cc") 
-
-    fixed:
-        xalign 0.5 yalign 0.5
-        xsize 500 ysize 900 
-
-        add "smartphonemockup" xalign 0.5 yalign 0.5
-
-        vbox:
-            xalign 0.5
-            ypos 0.22 
-            xsize 320 
-            spacing 20
-
-            hbox:
-                spacing 15
-                xalign 0.1
-                add personagem_avatar zoom 0.8 
-                
-                vbox:
-                    yalign 0.5
-                    text "[personagem_nome]" color "#ffffff" size 22 bold True
-                    text "online" color "#4df14d" size 14
-
-            frame:
-                background Frame(Solid("#2c3e50"), 10, 10) 
-                padding (15, 15, 15, 15)
-                xsize 300
-                xalign 0.5
-                
-                text "[mensagem_texto]":
-                    color "#ffffff"
-                    size 20
-                    line_spacing 5
-
-            null height 100 
-
-            textbutton "FECHAR":
-                action Return()
-                xalign 0.5
-                ypos 0.85 
-                text_size 18
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # ==========================================
-# 4. LABELS E LÓGICA ALEATÓRIA
+# 3. LABELS E LÓGICA ALEATÓRIA
 # ==========================================
 label ver_mensagens:
     python:
@@ -191,19 +138,27 @@ label ver_mensagens:
 
 label usar_laptop:
     "Theo" "Vou checar o fórum... nada de interessante hoje."
+    $ acoes_hoje += 1
     call screen hub_principal
+    
 
 label olhar_foto_luisa:
-    "Theo" "Minha mãe sempre foi meu porto seguro."
-    call screen hub_principal
+    t "Resolver exercícios de física com a Luisa. (Rolê com Luísa)"
+    t "só exercício nível ITA"
+    jump abrir_hub
 
 label olhar_foto_maya:
-    "Theo" "Maya... ela é incrível no tabuleiro."
-    call screen hub_principal
+    t "Maya... ela é incrível sempre foi meu porto seguro. (Rolê com Maya)"
+    t "O tempo voou conversando com a Maya. Preciso de um descanso."
+        
+    jump abrir_hub
 
 label olhar_foto_leo:
-    "Theo" "Leo é um amigão, mesmo sendo meio doido."
-    call screen hub_principal
+    t "Leo é um amigão, mesmo sendo meio doido. (Rolê com Leo)"
+    t "Rimos muito, mas agora minha cabeça precisa de paz."
+        
+    jump abrir_hub
+    
 
 
 label confirmar_passar_dia:

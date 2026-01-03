@@ -115,11 +115,11 @@ label vitoria_mental_enzo:
     # Se a Luisa já foi derrotada, ela também manda mensagem:
     $ nova_msg_luisa = True
     $ acoes_hoje += 1  
-    enz "Admito... sua base teórica é superior à minha expectativa."
+    enz "Não é possível... isso não vai ficar assim."
     
-    "Você derrotou o mestre da técnica. O silêncio no clube é quebrado apenas pelas notificações no seu bolso."
+    "Você derrotou o mestre da técnica. O silêncio no ginásio é quebrado apenas pelos gritos tímidos dos amigos de Theo!!!."
     
-    jump abrir_hub # Ou o nome da sua label que chama o Hub
+    jump cena_pos_vitoria_enzo
 
 label derrota_mental_enzo:
     hide screen interface_duelo_mental
@@ -156,16 +156,17 @@ image flash_vermelho = Solid("#ff0000")
 
 
 label boss_fight_luisa:
-    # 1. Configurações Iniciais e Reset de Status
+    # Verificação de segurança
+    if acoes_hoje >= 2:
+        jump theo_cansado
+
+    # 1. Configurações Iniciais
     $ theo_hp = theo_max
     $ luisa_hp = luisa_max
     $ round_atual = 0
-    
-    # Prepara a lista de puzzles para a luta
     $ puzzles_disponiveis = lista_puzzles_luisa[:]
     $ random.shuffle(puzzles_disponiveis)
 
-    # Cenário e Personagens
     scene bibliotecajogo 
     show luisa normal at pos_luisa:
         xalign 1.0 yalign 0.1 zoom 1.9
@@ -173,100 +174,74 @@ label boss_fight_luisa:
         xalign 0.3 yalign 0.1 zoom 1.9
         
     lu "Você evoluiu, Theo. Mas vamos ver como sua mente lida com a pressão real."
-
-    # Mostra a interface de HP
     show screen status_boss_fight
 
-    # 2. Loop de Combate (Dura até alguém zerar o HP)
+    # 2. Loop de Combate
     while theo_hp > 0 and luisa_hp > 0:
         $ round_atual += 1
 
-        # Verifica se precisa recarregar os puzzles
         if not puzzles_disponiveis:
             $ puzzles_disponiveis = lista_puzzles_luisa[:]
             $ random.shuffle(puzzles_disponiveis)
         
-        # Pega um puzzle e prepara as opções
         $ puzzle = puzzles_disponiveis.pop()
         python:
             opcoes = [[puzzle[2], True], [puzzle[3], False]]
             random.shuffle(opcoes)
 
-        # Chama a tela do puzzle
-        $ resultado = renpy.call_screen("tela_treinamento", puzzle_atual=puzzle, opcoes_sorteadas=opcoes, mostrar_fundo=False)
+        # --- CHAMADA COM TÍTULO PERSONALIZADO ---
+        $ resultado = renpy.call_screen("tela_treinamento", 
+                                        puzzle_atual=puzzle, 
+                                        opcoes_sorteadas=opcoes, 
+                                        mostrar_fundo=False, 
+                                        titulo_personalizado="DESAFIO DA LUÍSA")
 
         if resultado:
-            # --- LÓGICA DE ACERTO ---
             python:
                 base_dano = 20 + (theo_foco * 0.2) 
                 multiplicador = 1.0 + (theo_estabilidade / 100.0)
                 dano_final_theo = int((base_dano * multiplicador) + (theo_ousadia * 0.3))
-                
                 luisa_hp -= dano_final_theo
                 theo_estabilidade = min(theo_estabilidade + 5, 100)
             
             with hpunch
             lu "Um movimento preciso! Você causou [dano_final_theo] de dano."
-
         else:
-            # --- LÓGICA DE ERRO ---
             python:
-                # Usamos 'store.' para garantir que o diálogo [dano_recebido] funcione
                 penalidade_ousadia = int(theo_ousadia * 0.6)
                 store.dano_recebido = 15 + penalidade_ousadia
                 theo_hp -= store.dano_recebido
                 theo_foco = max(theo_foco - 10, 0)
                 theo_estabilidade = max(theo_estabilidade - 10, 0)
             
-            show flash_vermelho zorder 100
-            with Dissolve(0.1)
-            
-            show luisa normal at pos_luisa zorder 50
-            
-            hide flash_vermelho
-            with Dissolve(0.2)
-            
+            show flash_vermelho zorder 100 with Dissolve(0.1)
+            hide flash_vermelho with Dissolve(0.2)
             with vpunch
-            # Agora o Ren'Py vai encontrar a variável store.dano_recebido
-            lu "Sua leitura de jogo foi amadora. Você entregou a posição e agora está pagando o preço: [dano_recebido] de dano!"
+            lu "Sua leitura de jogo foi amadora. [dano_recebido] de dano!"
 
-        # Verificação de fim de luta dentro do loop para interrupção imediata
+        # Verificação de fim de luta dentro do loop
         if theo_hp <= 0:
             jump derrota_boss
         if luisa_hp <= 0:
             jump vitoria_boss
 
-    return
-
-# --- RESULTADOS ---
+    jump abrir_hub # Segurança extra caso saia do while de forma inesperada
 
 label vitoria_boss:
     hide screen status_boss_fight
-    show luisa raiva # Expressão de quem perdeu
+    show luisa raiva 
     lu "Incrível... Xeque-mate. Você me venceu, Theo."
     $ persistent.luisa_vencida = True
     $ theo_rating += 100
     $ theo_ousadia += 15
-    $ nova_msg_maya = True
-    $ nova_msg_leo = True
-    $ nova_msg_luisa = True
     $ acoes_hoje += 1 
-    "Vitória épica! Luísa reconhece seu talento. Rating +100."
-   
+    "Vitória épica! Rating +100."
     jump abrir_hub
 
-
 label derrota_boss:
-    "Suas energias se esgotaram e você não consegue mais manter a concentração no tabuleiro."
-    "O adversário percebe sua hesitação e finaliza a partida com precisão."
-    "Theo: (Droga... eu preciso estudar mais a tática deles...)"
-    
-    # Penalidade leve para dar peso à derrota
-    $ theo_foco = max(10, theo_foco - 10)
+    hide screen status_boss_fight
+    "Suas energias se esgotaram..."
     $ acoes_hoje += 1 
     $ theo_rating -= 150
-    $ theo_ousadia -= 20
-    $ theo_foco -= 10
-    $ theo_estabilidade -= 10
-    # Faz o jogo voltar para o mapa principal
+    $ theo_foco = max(0, theo_foco - 20)
     jump abrir_hub

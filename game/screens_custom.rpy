@@ -84,59 +84,6 @@ screen puzzle_guardanapo_circles():
 
 
 
-screen tela_chat(personagem_nome, personagem_avatar, mensagem_texto):
-    modal True
-    add Solid("#000000cc") # Escurece o fundo do jogo
-
-    # Container principal que centraliza o celular na tela
-    fixed:
-        xalign 0.5 yalign 0.5
-        xsize 500 ysize 900 # Tamanho aproximado da imagem do celular
-
-        # 1. A Imagem do Smartphone
-        add "smartphonemockup" xalign 0.5 yalign 0.5
-
-        # 2. O Conteúdo (alinhado apenas na parte preta da tela)
-        # Ajustamos as margens (padding) para o texto não bater nas bordas da tela preta
-        vbox:
-            xalign 0.5
-            ypos 0.22 # Começa logo abaixo da barra de status (sinal/bateria)
-            xsize 320 # Largura exata da área preta da tela
-            spacing 20
-
-            # Cabeçalho (Avatar e Nome)
-            hbox:
-                spacing 15
-                xalign 0.1
-                add personagem_avatar zoom 0.8 # Diminui o ícone se estiver grande
-                
-                vbox:
-                    yalign 0.5
-                    text "[personagem_nome]" color "#ffffff" size 22 bold True
-                    text "online" color "#4df14d" size 14
-
-            # Área da Mensagem (Balão)
-            frame:
-                background Frame(Solid("#2c3e50"), 10, 10) # Balão escuro
-                padding (15, 15, 15, 15)
-                xsize 300
-                xalign 0.5
-                
-                text "[mensagem_texto]":
-                    color "#ffffff"
-                    size 20
-                    line_spacing 5
-
-            null height 100 # Espaço para o botão não ficar em cima do texto
-
-            # Botão Fechar (Posicionado onde seria o botão "Home" do celular)
-            textbutton "FECHAR":
-                action Return()
-                xalign 0.5
-                ypos 0.85 # Ajusta para ficar perto do círculo branco debaixo
-                style "hub_button"
-                text_size 18
-
 screen tela_stats_detalhada():
     modal True
     add Solid("#000000aa") 
@@ -194,83 +141,258 @@ screen tela_torneios():
     frame:
         xalign 0.5 yalign 0.5
         background Solid("#1c1c1c")
-        padding (30, 30)
+        padding (20, 20)
         xsize 750
-        ysize 650
+        ysize 700 # Altura total do quadro
         
         vbox:
-            spacing 15
-            text "CALENDÁRIO DE COMPETIÇÕES" xalign 0.5 size 32 color "#f1c40f" bold True
+            xfill True
+            
+            text "CALENDÁRIO DE COMPETIÇÕES" xalign 0.5 size 30 color "#f1c40f" bold True
             null height 10
             
             viewport:
+                ysize 520 
                 scrollbars "vertical"
                 mousewheel True
                 draggable True
                 
                 vbox:
-                    spacing 12
+                    spacing 10
                     xfill True
                     
                     for item in lista_torneios:
-                        # Extração segura dos dados da sua lista
                         $ nome_t = item[0]
                         $ r_req = item[1]
                         $ l_alvo = item[2]
                         $ v_vitoria = item[3]
                         
-                        # Verificação de status usando o persistent que você definiu
                         $ vencido = getattr(persistent, v_vitoria, False)
                         $ liberado = theo_rating >= r_req
                         
-                        # Escolha da cor do fundo
-                        $ cor_bg = "#1a1a1a" # Bloqueado
-                        if vencido:
-                            $ cor_bg = "#0e1a26"
-                        elif liberado:
-                            $ cor_bg = "#2c3e50"
+                        $ cor_bg = "#0e1a26" if vencido else ("#2c3e50" if liberado else "#1a1a1a")
 
                         frame:
                             background Solid(cor_bg)
-                            padding (15, 10)
+                            padding (10, 10)
                             xfill True
                             
                             hbox:
-                                spacing 20
-                                xfill True
+                                spacing 15
+                                xfill True 
                                 
-                                # Ícone
+                                # 1. ÍCONE
                                 if vencido:
-                                    text "✅" size 25 yalign 0.5
+                                    text "✅" size 22 yalign 0.5
                                 elif not liberado:
-                                    text "🔒" size 25 yalign 0.5
+                                    text "🔒" size 22 yalign 0.5
                                 else:
-                                    text "🏆" size 25 yalign 0.5 color "#f1c40f"
+                                    text "🏆" size 22 yalign 0.5 color "#f1c40f"
 
+                                # 2. TEXTOS (Nome e Status)
                                 vbox:
-                                    text "[nome_t]" size 22 color ("#7f8c8d" if (vencido or not liberado) else "#fff")
+                                    yalign 0.5
+                                    $ cor_txt = "#7f8c8d" if (vencido or not liberado) else "#fff"
+                                    text "[nome_t]" size 20 color cor_txt
                                     
                                     if vencido:
-                                        text "Torneio Concluído" size 14 color "#3498db"
+                                        text "Concluído" size 12 color "#3498db"
                                     elif not liberado:
-                                        text "Requer [r_req] Rating" size 14 color "#e74c3c"
+                                        text "Requer [r_req] Rating" size 12 color "#e74c3c"
+                                    # --- NOVO: Mensagem visual de cansaço dentro da lista ---
+                                    elif acoes_hoje >= 2:
+                                        text "Theo está muito cansado hoje" size 12 color "#e67e22"
                                     else:
-                                        text "Inscrição Aberta!" size 14 color "#2ecc71"
+                                        text "Inscrição Aberta!" size 12 color "#2ecc71"
                                 
-                                # Botão de ação
+                                # 3. ESPAÇADOR DINÂMICO
+                                null width 10 
+
+                                # 4. BOTÃO (Com a trava sensitive aplicada)
                                 if not vencido:
                                     textbutton "INSCREVER":
                                         yalign 0.5
-                                        xalign 1.0
+                                        xalign 1.0 
                                         action [Hide("tela_torneios"), Jump(l_alvo)]
-                                        sensitive liberado
+                                        # ALTERAÇÃO AQUI: Só ativa se estiver liberado E tiver ações
+                                        sensitive (liberado and acoes_hoje < 2)
+                                        
+                                        text_size 18
+                                        background Frame(Solid("#34495e"), 4, 4)
+                                        padding (10, 5)
                                 else:
-                                    text "FINALIZADO" yalign 0.5 xalign 1.0 size 18 italic True color "#3498db"
+                                    text "FINALIZADO" yalign 0.5 xalign 1.0 size 16 italic True color "#3498db"
             
             null height 20
-            textbutton "FECHAR":
-                action Hide("tela_torneios")
-                xalign 0.5
-                text_hover_color "#f1c40f"
-
             
+            vbox:
+                xfill True 
+                
+                button: 
+                    action Hide("tela_torneios")
+                    xalign 0.5 
+                    background Solid("#34495e") 
+                    hover_background Solid("#f1c40f") 
+                    padding (20, 10) 
+                    
+                    text "VOLTAR AO QUARTO":
+                        align (0.5, 0.5) 
+                        size 22
+                        color "#fff"
+                        hover_color "#1c1c1c" 
+                        bold True
+
+    key "game_menu" action Hide("tela_torneios")
+
+
+
+screen tela_chat(personagem_nome, personagem_avatar, mensagem_texto):
+    modal True
+    add Solid("#000000cc") 
+
+    fixed:
+        xalign 0.5 yalign 0.5
+        xsize 500 ysize 900 
+
+        add "smartphonemockup" xalign 0.5 yalign 0.5
+
+        # VBOX do Conteúdo (Balão e Topo)
+        vbox:
+            # xoffset empurra todo o grupo para a direita
+            xoffset 40 
+            xalign 0.5
+            ypos 0.22 
+            xsize 320 
+            spacing 20
+
+            hbox:
+                spacing 15
+                xalign 0.1
+                add personagem_avatar zoom 0.8 
+                vbox:
+                    yalign 0.5
+                    text "[personagem_nome]" color "#ffffff" size 22 bold True
+                    text "online" color "#4df14d" size 14
+
+            frame:
+                background Frame(Solid("#2c3e50"), 10, 10) 
+                padding (15, 15, 15, 15)
+                xsize 300
+                xalign 0.5
+                text "[mensagem_texto]" color "#ffffff" size 20 line_spacing 5
+
+        # --- BOTÃO FECHAR ---
+        textbutton "FECHAR":
+            action Return()
+            
+            # xpos 0.5 + xoffset 20 garante que ele siga o balão
+            xpos 0.5 
+            xoffset 40
+            
+            ypos 0.78 
+            anchor (0.5, 0.5) 
+
+            background Solid("#2980b9")
+            idle_background Solid("#2980b9")
+            hover_background Solid("#3498db")
+            
+            text_color "#ffffff"
+            text_size 18
+            text_bold True
+            padding (40, 12)
+
+
+
+
+# screen tela_treinamento(puzzle_atual, opcoes_sorteadas, **kwargs):
+#     zorder 100
+#     modal True
+    
+#     # Se 'mostrar_fundo' for False (como na Boss Fight), ele não adiciona o preto
+#     if kwargs.get("mostrar_fundo", True):
+#         add Solid("#000000aa")
+
+#     frame:
+#         xalign 0.5 yalign 0.5
+#         background None 
+        
+#         vbox:
+#             xalign 0.5
+#             spacing 15 
+
+#             text "TREINO TÁTICO" xalign 0.5 size 28 color "#f1c40f" bold True
+
+#             frame:
+#                 background Solid("#1a1a1a")
+#                 padding (5, 5)
+#                 xalign 0.5
+#                 add puzzle_atual[0] zoom 0.5 
+
+#             frame:
+#                 xalign 0.5
+#                 background Solid("#000000cc") 
+#                 padding (15, 8)
+#                 xmaximum 800
+                
+#                 text puzzle_atual[1]:
+#                     size 24
+#                     xalign 0.5
+#                     color "#fff"
+#                     text_align 0.5
+
+#             hbox:
+#                 xalign 0.5
+#                 spacing 30 
+#                 for item in opcoes_sorteadas:
+#                     textbutton item[0]:
+#                         action Return(item[1])
+#                         style "hub_button"
+
+
+
+# --- TELA DE TREINAMENTO / BOSS FIGHT ---
+screen tela_treinamento(puzzle_atual, opcoes_sorteadas, **kwargs):
+    zorder 100
+    modal True
+    
+    # Controle de fundo (Boss Fight não tem fundo preto)
+    if kwargs.get("mostrar_fundo", True):
+        add Solid("#000000aa")
+
+    frame:
+        xalign 0.5 yalign 0.5
+        background None 
+        
+        vbox:
+            xalign 0.5
+            spacing 15 
+
+            # Título Dinâmico: Usa o que você mandar ou o padrão "TREINO TÁTICO"
+            $ titulo_exibido = kwargs.get("titulo_personalizado", "TREINO TÁTICO")
+            text "[titulo_exibido]" xalign 0.5 size 28 color "#f1c40f" bold True
+
+            frame:
+                background Solid("#1a1a1a")
+                padding (5, 5)
+                xalign 0.5
+                add puzzle_atual[0] zoom 0.5 
+
+            frame:
+                xalign 0.5
+                background Solid("#000000cc") 
+                padding (15, 8)
+                xmaximum 800
+                
+                text puzzle_atual[1]:
+                    size 24
+                    xalign 0.5
+                    color "#fff"
+                    text_align 0.5
+
+            hbox:
+                xalign 0.5
+                spacing 30 
+                for item in opcoes_sorteadas:
+                    textbutton item[0]:
+                        action Return(item[1])
+                        style "hub_button"
