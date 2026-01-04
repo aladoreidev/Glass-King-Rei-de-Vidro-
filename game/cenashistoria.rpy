@@ -107,29 +107,40 @@ label cena_derrota_clube:
         matrixcolor SaturationMatrix(1.0)
     with dissolve
 
+    # No final do menu, antes do jump:
+    stop music fadeout 2.0
+    scene black with Dissolve(2.0)
     "A noite cai sobre a cidade, e o silêncio agora é o único companheiro de Theo."
+        
     jump encontro_amigos_pos_derrota
 
 # Cena do lado de fora do Clube
 label encontro_amigos_pos_derrota:
-    scene ruanoite with fade
+    # Começa com a tela preta e o som da rua subindo antes da imagem
+    play ambience "audio/rua_noite.ogg" fadein 3.0 
+    scene ruanoite 
+    with Fade(1.5, 0.5, 1.5) # Escurece, espera meio segundo, clareia a nova cena
 
-    # Theo no centro com o novo padrão
+    # Theo já começa na cena, cabisbaixo, em silêncio por um tempo
     show theo triste at modo_full:
-        xalign 0.5
-    with moveinleft
+        xalign 0.4
+    with dissolve
+    
+    pause 1.0 # Pausa dramática para sentir a solidão dele
+    
+    "O ar gelado da noite ajuda a baixar a adrenalina..."
 
-    "O ar gelado da noite ajuda a baixar a adrenalina, mas o silêncio é logo interrompido por passos rápidos."
-
-    # Léo aparece na esquerda
+    # O som dos passos antes do Léo aparecer
+    play sound "audio/passos_apressados.ogg"
+    
+    # Léo entra deslizando suavemente (easeinleft é mais elegante que moveinleft)
     show leo normal at modo_full:
         xalign 0.1
-    with moveinleft  
+        xzoom -1.0
+    with easeinleft  
     
     l "Theo! Cara, o que foi aquilo?..." 
-    
-    show theo normal at modo_full:
-        xalign 0.5 
+        
     t "Cara, eu não sei explicar... Estava ganho, mas de repente..."
 
     l "Mano, relaxa... aquele velho idiota só consegue vencer se for daquele jeito"
@@ -140,15 +151,15 @@ label encontro_amigos_pos_derrota:
 
     l "Acho que a última vez que ele ficou feliz daquele jeito, Fischer ainda era juvenil..."
       
-    # Luísa aparece na direita, mas o xalign 0.7 garante que ela não "atropele" o Theo
-    # O 'behind theo' garante que, se eles se tocarem, ela fique atrás do braço dele
-    show luisa normal at modo_full:
+    # Luísa aparece na direita
+    show luisa normal at modo_full behind theo:
         xalign 0.95
     with moveinright
        
     lu "Não vejo graça nisso, Léo. Xadrez é autocontrole..."
     
-    show theo triste at modo_full 
+    show theo triste at modo_full:
+        xalign 0.4
     lu "Fala sério Theo, aquele lance do Cavalo para c5 foi muito esquisito..."
     lu "Tudo bem que depois você ficou melhor, mas..."
     
@@ -156,12 +167,14 @@ label encontro_amigos_pos_derrota:
 
     # Maya aparece entre o Theo e a Luisa
     show maya normal at modo_full: 
-        xalign 0.7 yalign 0.98
+        xalign 0.7 
+        yalign 1.0
     with moveinright
     
     ma "Menos, Luisa. Ninguém precisa de uma autópsia da partida..."
 
-    show theo normal at modo_full
+    show theo normal at modo_full:
+        xalign 0.4
     "Maya se aproxima um pouco mais, e o tom de voz dela suaviza."
     ma "Você jogou bem até o incidente, Theo. Teve uma linha de ataque na abertura que foi... brilhante."
     ma "Não deixe o erro final apagar o que você construiu antes."
@@ -191,34 +204,24 @@ label encontro_amigos_pos_derrota:
 
     "O clima entre o grupo começa a suavizar conforme vocês se afastam do clube."
 
+    # --- PARTE CORRIGIDA (Removi as repetições de bloco que estavam sobrando) ---
+
     show leo feliz at modo_full:
         xalign 0.1
     l "Pô galerinha, a minha barriga tá roncando mais alto que o relógio do Macedo! O que vocês acham da gente colar lá na 'CheckMate Burguer'?"
     l "Dizem que o 'X-Bispo' de lá é imbatível, quase um xeque-mate no estômago!"
 
-    # Adicionado o transform e posição para o Theo
     show theo normal at modo_full:
-        xalign 0.5
-    # Léo na esquerda
-    show leo feliz at modo_full:
-        xalign 0.1
-    l "Pô galerinha, a minha barriga tá roncando mais alto que o relógio do Macedo! O que vocês acham da gente colar lá na 'CheckMate Burguer'?"
-    l "Dizem que o 'X-Bispo' de lá é imbatível, quase um xeque-mate no estômago!"
-
-    # Theo um pouco para a esquerda do centro
-    show theo normal at modo_full:
-        xalign 0.5
+        xalign 0.4
     t "Sabe de uma coisa? Eu topo. Acho que se eu ficar sozinho em casa agora, vou acabar jogando meu tabuleiro pela janela."
 
-    # Luísa na direita. Removi o ":" para evitar o erro de bloco vazio
     show luisa raiva at modo_full behind theo:
         xalign 0.95
-    with moveinright
+    with dissolve # Usando dissolve para não conflitar com a posição fixa
     
     lu "Como é que é? Theo, você acabou de sofrer uma derrota técnica por falta de foco e sua solução é... comer um hambúrguer?"
     lu "Você deveria ir direto para o computador revisar. Cada minuto que você passa mastigando é um minuto a menos revisando onde sua estrutura de peões colapsou."
 
-    # Maya no centro-direita
     show maya feliz at modo_full:
         xalign 0.7
     ma "Relaxa, Luisa. O cérebro dele ferveu lá dentro. Se ele tentar analisar algo agora, vai acabar confundindo o Rei com um pão de batata."
@@ -231,21 +234,17 @@ label encontro_amigos_pos_derrota:
         xalign 0.1
     l "Aê! Viu só? Até a Maya reconheceu minha genialidade oculta. Vamos logo antes que a Luisa comece a dar aula de abertura no meio da calçada!"
 
-    # --- CORREÇÃO DOS ERROS DE INDENTAÇÃO ---
-    # Aqui, cada 'show' tem seu próprio bloco de posição
-    
+    # Sincronização Final de Sorrisos
     show leo feliz at modo_full:
         xalign 0.1
-
     
     show theo feliz at modo_full:
         xalign 0.4
         
     show maya feliz at modo_full:
-        xalign 0.6
+        xalign 0.7
     
     "Theo, Leo e Maya sorriem um para o outro, prontos para o hambúrguer."
-
 
     # Transição para a lanchonete
     hide leo
@@ -253,7 +252,8 @@ label encontro_amigos_pos_derrota:
     hide luisa
     hide maya
     with fade
-    
+
+       
     # Cena da Lanchonete Checkmate Burguer
     
     scene checkmateburger with fade

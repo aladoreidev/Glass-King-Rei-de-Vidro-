@@ -14,17 +14,20 @@ define enz = Character("Enzo", color="#e74c3c", image="enzo")
 define mae = Character("Dra karolina", color="#ed2913", image="dra_karolina")
 define v = Character("Vico", color="#043d23", image="vico")
 
-# Transforms (O Ren'Py precisa ler isso antes de usar)
+# Para sprites de 2400x3600px
+
+
 transform modo_full:
     yalign 1.0
-    zoom 1.0
+    zoom 0.5
     yoffset 0
 
-transform modo_busto:
-    yalign 1.0
-    zoom 1.6
-    yoffset 550
 
+
+transform modo_busto:
+    yalign 1.0     # Alinha a base da imagem no fundo da tela
+    zoom 0.75   # Diminuí bastante o zoom para o rosto entrar na tela
+    yoffset 0      # Resetamos o offset para ver onde a cabeça para
 # =========================================================
 # 2. LABEL DE TESTE (Vem depois das definições)
 # =========================================================

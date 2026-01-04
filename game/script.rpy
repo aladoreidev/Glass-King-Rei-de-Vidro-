@@ -89,14 +89,14 @@ label start:
     
     # 2. Agora o salto para o início da história
     # (Descomente apenas o que for testar)
-    #jump cena_derrota_clube
+    jump cena_derrota_clube
     #jump boss_fight_enzo
     #jump abrir_hub
     #jump teste_de_expressoes
     #jump cena_exemplo_dimensoes_personagens
     #jump encontro_amigos_pos_derrota
     #jump cena_escola_rival
-    jump flashback_infancia
+    #jump flashback_infancia
 
 label escolher_dificuldade:
     menu:
