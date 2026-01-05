@@ -157,22 +157,31 @@ label boss_fight_macedo:
         if v_theo == 5:
             "{color=#d4af37}{b}PERFORMANCE PERFEITA!{/b}{/color}"
             "Macedo está em choque. Você não cometeu um único erro!"
-            $ theo_rating += 250
-            $ theo_foco += 30
-            "Recompensa: +250 Rating / +30 Foco."
+            
+            $ alterar_status("theo_rating", +250, "+250 RATING", "#fae207")
+            $ alterar_status("theo_foco", +30, "+30 FOCO", "#1f08f2")
+            $ alterar_status("theo_estabilidade", +5, "+5 ESTABILIDADE", "#09e639")
+            $ alterar_status("theo_ousadia", +5, "+5 OUSADIA", "#e67e22")
+            "Recompensa: +250 Rating / +30 Foco / +5 ESTABILIDADE / +5 OUSADIA."
         else:
-            $ theo_rating += 150
-            $ theo_foco += 20
+            
+            $ alterar_status("theo_rating", +150, "+150 RATING", "#fae207")
+            $ alterar_status("theo_foco", +20, "+20 FOCO", "#1f08f2")
             "Recompensa: +150 Rating / +20 Foco."
             
         $ persistent.copa_local_vencida = True
     else:
         "FINAL: Theo [v_theo] x [v_macedo] Macedo. Você perdeu."
-        $ theo_rating -= 50
-        $ theo_estabilidade -= 20
-        "Penalidade: -50 Rating / -20 Estabilidade."
+        
 
-    "Status Atual: Rating [theo_rating] | Foco [theo_foco] | Estabilidade [theo_estabilidade]"
+        $ alterar_status("theo_rating", -100, "-100 RATING", "#e60909")
+        $ alterar_status("theo_foco", -5, "-5 FOCO", "#e60909")
+        $ alterar_status("theo_estabilidade", -20, "-20 ESTABILIDADE", "#e60909")
+        $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
+
+        "Penalidade: -50 Rating / -20 Estabilidade / -5 Foco / -5 Ousadia."
+
+    "Status Atual: Rating [theo_rating] | Foco [theo_foco] | Estabilidade [theo_estabilidade] | Ousadia [theo_ousadia]"
     
     jump abrir_hub
 

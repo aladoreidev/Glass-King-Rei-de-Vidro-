@@ -81,7 +81,7 @@ label checar_resposta:
     if escolha_jogador == correta:
         $ pressao_enzo += 1
         "Resposta correta! Você ganha terreno no tabuleiro."
-        enz "Lógica impecável... continue assim."
+        enz "Um golpe de sorte...eu vou me recuperar."
     else:
         $ pressao_theo += 1
         with vpunch
@@ -97,16 +97,19 @@ label vitoria_mental_enzo:
     if theo_ansiedade > 0:
         $ theo_ansiedade -= 1
         "A vitória contra Enzo acalmou seus batimentos. Você se sente mais seguro."
-
-    $ theo_rating += 150
-    $ theo_foco += 15
-    $ theo_estabilidade += 10
-    $ theo_ousadia += 5
+      
+    
     $ persistent.enzo_vencido = True 
     $ nova_msg_maya = True
     $ nova_msg_leo = True
     $ nova_msg_luisa = True
-    $ acoes_hoje += 1  
+    $ acoes_hoje += 1
+
+    $ alterar_status("theo_rating", +150, "+150 RATING", "#fae207")
+    $ alterar_status("theo_foco", +15, "+15 FOCO", "#1f08f2")
+    $ alterar_status("theo_estabilidade", +10, "+10 ESTABILIDADE", "#09e639")
+    $ alterar_status("theo_ousadia", +5, "+5 OUSADIA", "#e67e22")
+    
 
     enz "Não é possível... isso não vai ficar assim."
     "Você derrotou o mestre da técnica. O silêncio no ginásio é quebrado apenas pelos gritos tímidos dos amigos de Theo!!!"
@@ -118,11 +121,13 @@ label derrota_mental_enzo:
     enz "Estude mais. O tabuleiro não perdoa a ignorância."
     
     # Penalidades normais de derrota
-    $ theo_rating -= 250
-    $ theo_foco -= 15
-    $ theo_ousadia -= 20
-    $ theo_estabilidade -= 30
+    
     $ acoes_hoje += 1 
+
+    $ alterar_status("theo_rating", -250, "-250 RATING", "#e60909")
+    $ alterar_status("theo_foco", -15, "-15 FOCO", "#e60909")
+    $ alterar_status("theo_estabilidade", -20, "-20 ESTABILIDADE", "#e60909")
+    $ alterar_status("theo_ousadia", -20, "-20 OUSADIA", "#e60909")
 
     # --- O GATILHO DO PESADELO ---
     jump cena_pesadelo_derrota
@@ -228,9 +233,12 @@ label vitoria_boss:
     show luisa raiva 
     lu "Incrível... Xeque-mate. Você me venceu, Theo."
     $ persistent.luisa_vencida = True
-    $ theo_rating += 100
-    $ theo_ousadia += 15
+    
     $ acoes_hoje += 1 
+
+    $ alterar_status("theo_rating", +100, "+100 RATING", "#fae207")
+    $ alterar_status("theo_ousadia", +15, "+15 OUSADIA", "#e67e22")
+
     "Vitória épica! Rating +100."
     jump abrir_hub
 
@@ -238,6 +246,12 @@ label derrota_boss:
     hide screen status_boss_fight
     "Suas energias se esgotaram..."
     $ acoes_hoje += 1 
-    $ theo_rating -= 150
+    
+    $ alterar_status("theo_rating", -150, "-150 RATING", "#e60909")
+    $ alterar_status("theo_foco", -5, "-5 FOCO", "#e60909")
+    $ alterar_status("theo_estabilidade", -10, "-10 ESTABILIDADE", "#e60909")
+    $ alterar_status("theo_ousadia", -20, "-20 OUSADIA", "#e60909")
+
+
     $ theo_foco = max(0, theo_foco - 20)
     jump abrir_hub

@@ -21,7 +21,7 @@ label cena_pesadelo_derrota:
         jump game_over_definitivo
 
     # --- FLUXO NORMAL: ACORDAR NO QUARTO ---
-    scene bg_quarto_theo_noite with dissolve
+    scene quartonoite with dissolve
     t "Argh! {i}(Ofegante){/i} Foi... foi só um sonho."
     t "Mas pareceu tão real. Se eu não treinar e subir o meu Rating, vou acabar derrotado no ginásio."
     

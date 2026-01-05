@@ -10,7 +10,8 @@ default afeto_leo = 0           # Amizade com o melhor amigo/rival
 default afeto_maya = 0       # Substitua pelo nome da personagem
 default afeto_luisa = 0       # Substitua pelo nome da personagem
 
-
+# Coloque isso no topo do seu script.rpy, fora de qualquer label
+define flash = Fade(0.1, 0.0, 0.5, color="#fff")
 
 #Hh para Boss Figth
 default theo_hp = 200
@@ -97,6 +98,9 @@ label start:
     #jump encontro_amigos_pos_derrota
     #jump cena_escola_rival
     #jump flashback_infancia
+    #jump cena_jantar_pais
+    show screen status_hud
+    #jump cena_pos_vitoria_enzo
 
 label escolher_dificuldade:
     menu:

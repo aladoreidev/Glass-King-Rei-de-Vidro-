@@ -1,15 +1,28 @@
 
 label cena_derrota_clube:
     scene clubexadrez with fade
+    show screen status_hud
 
-    # --- ENTRADA SUAVE (MOVIMENTO) ---
-    show macedolado:
-        xalign -0.5 yalign 0.35 zoom 0.7
-        easein 1.5 xalign 0.05
-    
-    show theolado:
-        xalign 1.5 yalign 0.20 zoom 0.6
-        easein 1.5 xalign 0.5
+    # --- ENTRADA SUAVE (MOVIMENTO INVERTIDO) ---
+
+    # Theo na ESQUERDA
+    show theoladotenso:
+        xalign -0.5 yalign 0.20 zoom 0.92
+        easein 1.5 xalign 0.1
+
+    # Tabuleiro deslizando para perto do MACEDO
+    # Tabuleiro compensado para a esquerda para parecer centralizado
+    show tabuleirolado:
+        subpixel True
+        anchor (0.5, 0.5)
+        xalign 0.5 yalign 0.8 zoom 0.7  # Começa no centro
+        # Se 0.5 está muito na direita, 0.42 vai empurrar ele na direção do Theo
+        easein 1.5 xalign 0.42 yalign 0.75
+
+    # Macedo na DIREITA
+    show macedoladoraiva:
+        xalign 1.5 yalign 1.0 zoom 0.92
+        easein 1.5 xalign 0.9
 
     "Clube de Xadrez Ala do Rei"
     "Março de 2015"
@@ -20,15 +33,43 @@ label cena_derrota_clube:
     "Theo era volátil. Sua concentração, embora profunda, era uma lâmina de vidro: brilhante, porém capaz de se estilhaçar com o menor ruído ou provocação."
     "Macedo, um veterano cujas mãos carregavam o cheiro de tabaco e cujas vitórias carregavam o cheiro da dúvida, conhecia bem os segredos daquele salão."
     "Conhecido por um estilo de jogo 'sujo' e psicológico, o velho mestre não estava ali para vencer no tabuleiro... ele estava ali para quebrar a mente de Theo."
+
+    # ... (seu texto anterior continua aqui)
+    "Conhecido por um estilo de jogo 'sujo' e psicológico, o velho mestre não estava ali para vencer no tabuleiro... ele estava ali para quebrar a mente de Theo."
+
+    # --- O MOMENTO DA TROCA E DO FLASH ---
+    
+    # 1. Escondemos as versões antigas (se necessário)
+    hide theoladotenso 
+    hide macedoladoraiva
+
+    # 2. Mostramos as novas posições com o flash
+    # O 'with vpunch' faz a tela tremer. 
+    # Se quiser que a tela brilhe branco, use 'with Flash(0.1)' (precisa definir Flash antes)
+    
+    show theoladoraiva:
+        xalign 0.1 yalign 0.20 zoom 0.92
+    
+    show macedoladoironico:
+        xalign 0.9 yalign 1.0 zoom 0.92  # Mantive ele em 0.9 para não fugir da tela!
+
+    with vpunch # Isso faz a tela "piscar" com um solavanco de impacto
+
+    "A tensão se rompeu. Theo sentiu o sangue ferver enquanto Macedo apenas sorria, saboreando o caos que havia plantado."
+    
+
+
+    
         
-    t "Eu juro que calculei todas as variantes..."
+
+    t "Tenho que ter certeza que essa variante está correta..."
     "As pessoas começavam a se aglomerar em volta da Mesa 1. O burburinho era baixo, mas a eletricidade no ar era evidente: a última rodada do torneio estava sendo decidida entre o jovem talento e o velho matreiro."
     t "Vamos, Theo, se concentra... Se Cavalo f3, Bispo, g5..."
     
     "Macedo percebeu a oportunidade perfeita. Ele parou de olhar para as casas do tabuleiro e passou a encarar o suor frio que escorria pela têmpora de Theo."
     "A cada movimento, Macedo não apenas posicionava as peças; ele as cravava no tabuleiro como se martelasse pregos em madeira bruta."
     "O pobre relógio também sofria. A cada pancada seca no botão metálico, o coração de Theo saltava, saindo perigosamente do compasso."
-
+    with vpunch
     t "Droga, perdi a linha de raciocínio..."
     "o suor escorria de sua tempora..."
     m "Cof... cof... cof..."
@@ -53,19 +94,31 @@ label cena_derrota_clube:
     # --- O IMPACTO DA XÍCARA ---
     stop music fadeout 0.5
     play sound "audio/glasscrash2.ogg"
+
+    with flash
     
     # Brilho de susto e tremor horizontal
     show white onlayer master:
         alpha 0.6
         linear 0.2 alpha 0.0
-    with hpunch
     
+    hide theoladoraiva
     # Theo perde a cor (Choque Psicológico)
-    show theolado:
+    show theoladotriste:
         matrixcolor SaturationMatrix(0.0)
     with Dissolve(0.2)
 
     "{b}CRACH!{/b}"
+
+    hide macedoladoironico
+
+    show macedoladocinico:
+        xalign 0.9 yalign 1.0 zoom 0.8  # Mantive ele em 0.9 para não fugir da tela!
+
+    hide theoladoraiva
+
+    show theoladotriste:
+        xalign 0.1 yalign 0.20 zoom 0.92
 
     "O som estridente da porcelana se desfazendo em mil pedaços ecoou pelas paredes de madeira como uma explosão. Foi o suficiente."
     "A mão de Theo fraquejou. O susto percorreu seu braço como uma corrente elétrica, fazendo-o soltar o Bispo na casa errada. O estalo da peça na posição fatal selou seu destino."
@@ -73,16 +126,33 @@ label cena_derrota_clube:
     "Nesse instante, o rosto de Macedo sofreu uma metamorfose sombria. A máscara carrancuda e as rugas de raiva acumulada deram lugar a algo muito pior: um sorriso malicioso que se espalhava lentamente."
     "Ele não apenas venceu; ele saboreou o momento em que a mente do jovem prodígio se estilhaçou junto com a xícara."
 
+
+    hide macedoladocinico
+
+    show macedoladofeliz:
+        xalign 0.9 yalign 1.0 zoom 0.92  # Mantive ele em 0.9 para não fugir da tela!
+
+
     m "Hehehehehehe..."
     m "O xadrez é um jogo de nervos, rapaz... e os seus acabam de virar poeira."
     m "Xeque-mate. Um belo Raio-X, não acha?"
     t "O quê?! A minha Dama... eu não queria soltar o Bispo ali!"
 
     # --- STATUS ---
-    $ theo_rating -= 30
-    $ theo_foco -= 20
-    $ theo_estabilidade -= 10
-    $ theo_ousadia += 5
+    # Agora vai aparecer um embaixo do outro perfeitamente!
+    $ alterar_status("theo_rating", -30, "-30 RATING", "#e60909")
+    with None # Limpa o buffer visual
+    
+    $ alterar_status("theo_foco", -20, "-20 FOCO", "#e60909")
+    with None # Limpa o buffer visual
+    
+    $ alterar_status("theo_estabilidade", -10, "-10 ESTABILIDADE", "#e60909")
+    with None # Limpa o buffer visual
+    
+    $ alterar_status("theo_ousadia", 5, "+5 OUSADIA", "#e67e22")
+    with None # Limpa o buffer visual
+    
+    
 
     "Você sente um peso esmagador no peito. O silêncio do clube agora parece zombar de você."
     m "Hehehehe... Volte para casa, rapaz. O tabuleiro não é lugar para quem se assusta com xícaras quebradas."
@@ -90,6 +160,7 @@ label cena_derrota_clube:
     menu:
         "Encarar o velho Macedo":
             $ theo_ousadia += 10
+            show screen aviso_status_rapido("+10 OUSADIA", cor_texto="#e67e22")
             "Theo respira fundo, ignorando o tremor nas mãos. Ele levanta a cabeça e encara as rugas profundas e o sorriso vitorioso de Macedo."
             t "Foi um bom golpe... mas não espere que a sorte te ajude da próxima vez."
             m "Sorte? Hehehe... Chame do que quiser, rapaz. Mas o placar diz que eu ainda sou o rei desta mesa."
@@ -98,6 +169,8 @@ label cena_derrota_clube:
         "Abandonar o salão imediatamente":
             $ theo_estabilidade += 5
             $ theo_ousadia -= 5
+            $ alterar_status("theo_estabilidade", +5, "+5 ESTABILIDADE", "#09e639")
+            $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
             "Theo não consegue dizer uma palavra. O som da xícara quebrando ainda ecoa em sua mente como um trovão."
             "Ele junta suas coisas às pressas, sentindo o peso dos olhares de pena e deboche sobre suas costas."
             "O ar lá fora parece subitamente frio enquanto ele atravessa a porta, deixando o 'hehehe' de Macedo para trás."
@@ -116,13 +189,14 @@ label cena_derrota_clube:
 
 # Cena do lado de fora do Clube
 label encontro_amigos_pos_derrota:
+    show screen status_hud
     # Começa com a tela preta e o som da rua subindo antes da imagem
     play ambience "audio/rua_noite.ogg" fadein 3.0 
     scene ruanoite 
     with Fade(1.5, 0.5, 1.5) # Escurece, espera meio segundo, clareia a nova cena
 
     # Theo já começa na cena, cabisbaixo, em silêncio por um tempo
-    show theo triste at modo_full:
+    show theo triste at modo_busto:
         xalign 0.4
     with dissolve
     
@@ -134,7 +208,7 @@ label encontro_amigos_pos_derrota:
     play sound "audio/passos_apressados.ogg"
     
     # Léo entra deslizando suavemente (easeinleft é mais elegante que moveinleft)
-    show leo normal at modo_full:
+    show leo normal at modo_busto:
         xalign 0.1
         xzoom -1.0
     with easeinleft  
@@ -152,13 +226,13 @@ label encontro_amigos_pos_derrota:
     l "Acho que a última vez que ele ficou feliz daquele jeito, Fischer ainda era juvenil..."
       
     # Luísa aparece na direita
-    show luisa normal at modo_full behind theo:
+    show luisa normal at modo_busto behind theo:
         xalign 0.95
     with moveinright
        
     lu "Não vejo graça nisso, Léo. Xadrez é autocontrole..."
     
-    show theo triste at modo_full:
+    show theo triste at modo_busto:
         xalign 0.4
     lu "Fala sério Theo, aquele lance do Cavalo para c5 foi muito esquisito..."
     lu "Tudo bem que depois você ficou melhor, mas..."
@@ -166,39 +240,45 @@ label encontro_amigos_pos_derrota:
     lu "Se você quer chegar ao Nacional..."
 
     # Maya aparece entre o Theo e a Luisa
-    show maya normal at modo_full: 
+    show maya normal at modo_busto: 
         xalign 0.7 
         yalign 1.0
     with moveinright
     
     ma "Menos, Luisa. Ninguém precisa de uma autópsia da partida..."
 
-    show theo normal at modo_full:
+    show theo normal at modo_busto:
         xalign 0.4
     "Maya se aproxima um pouco mais, e o tom de voz dela suaviza."
     ma "Você jogou bem até o incidente, Theo. Teve uma linha de ataque na abertura que foi... brilhante."
     ma "Não deixe o erro final apagar o que você construiu antes."
 
-    $ afeto_maya += 5 
+    $ afeto_maya += 5
+     
 
     menu:
         "Agradecer o apoio de Maya":
             $ afeto_maya += 10
-            $ theo_estabilidade += 5
+            
+            $ alterar_status("theo_estabilidade", +5, "+5 ESTABILIDADE", "#09e639")
+            
             t "Obrigado, Maya. Eu precisava ouvir isso. Luisa... você está certa sobre o foco, mas não precisa ser tão dura."
             lu "A verdade dói, Theo. Acostume-se."
 
         "Dar razão à critica de Luisa":
             $ afeto_luisa += 5
-            $ theo_estabilidade += 10
-            $ theo_ousadia -= 5
+                     
+            $ alterar_status("theo_estabilidade", +10, "+10 ESTABILIDADE", "#09e639")
+            $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
+
             t "A Luisa está certa. Eu fui fraco. Não posso culpar uma xícara pela minha falta de cálculo."
             lu "Finalmente um pouco de autocrítica. Agora, trate de voltar aos livros."
             ma "Não seja tão duro com você mesmo Theo..."
 
         "Fazer uma piada junto com Léo":
             $ afeto_leo += 15
-            $ theo_ousadia += 5
+            
+            $ alterar_status("theo_ousadia", +5, "+5 OUSADIA", "#e67e22")
             t "É, Léo... acho que o relógio vai precisar de terapia depois de hoje."
             l "Hahaha! Boa! Vamos comer uma pizza, eu pago. O Rating a gente recupera, mas a minha fome é urgente!"
 
@@ -206,42 +286,42 @@ label encontro_amigos_pos_derrota:
 
     # --- PARTE CORRIGIDA (Removi as repetições de bloco que estavam sobrando) ---
 
-    show leo feliz at modo_full:
+    show leo feliz at modo_busto:
         xalign 0.1
     l "Pô galerinha, a minha barriga tá roncando mais alto que o relógio do Macedo! O que vocês acham da gente colar lá na 'CheckMate Burguer'?"
     l "Dizem que o 'X-Bispo' de lá é imbatível, quase um xeque-mate no estômago!"
 
-    show theo normal at modo_full:
+    show theo normal at modo_busto:
         xalign 0.4
     t "Sabe de uma coisa? Eu topo. Acho que se eu ficar sozinho em casa agora, vou acabar jogando meu tabuleiro pela janela."
 
-    show luisa raiva at modo_full behind theo:
+    show luisa raiva at modo_busto behind theo:
         xalign 0.95
     with dissolve # Usando dissolve para não conflitar com a posição fixa
     
     lu "Como é que é? Theo, você acabou de sofrer uma derrota técnica por falta de foco e sua solução é... comer um hambúrguer?"
     lu "Você deveria ir direto para o computador revisar. Cada minuto que você passa mastigando é um minuto a menos revisando onde sua estrutura de peões colapsou."
 
-    show maya feliz at modo_full:
+    show maya feliz at modo_busto:
         xalign 0.7
     ma "Relaxa, Luisa. O cérebro dele ferveu lá dentro. Se ele tentar analisar algo agora, vai acabar confundindo o Rei com um pão de batata."
 
-    show maya normal at modo_full:
+    show maya normal at modo_busto:
         xalign 0.7
     ma "Eu apoio o Léo. Por incrível que pareça, ele teve uma ideia decente hoje. Vamos, Theo. A primeira rodada de fritas é por minha conta, pra compensar seu Rating perdido."
 
-    show leo normal at modo_full:
+    show leo normal at modo_busto:
         xalign 0.1
     l "Aê! Viu só? Até a Maya reconheceu minha genialidade oculta. Vamos logo antes que a Luisa comece a dar aula de abertura no meio da calçada!"
 
     # Sincronização Final de Sorrisos
-    show leo feliz at modo_full:
+    show leo feliz at modo_busto:
         xalign 0.1
     
-    show theo feliz at modo_full:
+    show theo feliz at modo_busto:
         xalign 0.4
         
-    show maya feliz at modo_full:
+    show maya feliz at modo_busto:
         xalign 0.7
     
     "Theo, Leo e Maya sorriem um para o outro, prontos para o hambúrguer."
@@ -289,7 +369,7 @@ label encontro_amigos_pos_derrota:
     show leo normal
 
 
-    l "Ele disse que é 'Mate em 2', mas eu acho que ele fumou meia. O que você acha? Se acertar, eu pago o seu refrigerante!"
+    l "Ele disse que é 'Mate em 2', mas eu acho que ele tava meio doidão. O que você acha? Se acertar, eu pago o seu refrigerante!"
 
     hide luisa
     hide maya
@@ -305,8 +385,9 @@ label mate_correto:
     show maya feliz at modo_busto:
         xalign 0.65
     show theo feliz
-    $ theo_rating += 25
-    $ theo_foco += 5
+    
+    $ alterar_status("theo_rating", +25, "+25 RATING", "#fae207")
+    $ alterar_status("theo_foco", +5, "+5 FOCO", "#1f08f2")
     t "Xeque com o sacrifício de Dama em f7! Mate imparável!"
     jump segue_conversa_pizzaria
 
@@ -319,9 +400,10 @@ label erro_bispo:
     show theo triste
     t "Bispo em f7...?"
     lu "Errado. O Rei foge para h8."
-    $ theo_rating -= 25
-    $ theo_foco -= 5
-    $ theo_ousadia -= 5
+    
+    $ alterar_status("theo_rating", -25, "-25 RATING", "#e60909")
+    $ alterar_status("theo_foco", -5, "-5 FOCO", "#e60909")
+    $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
     jump segue_conversa_pizzaria
 
 label erro_torre:
@@ -333,9 +415,9 @@ label erro_torre:
     show theo triste 
     t "Torre em f8...?"
     lu "Tá Maluco, Theo. Você perde a Dama."
-    $ theo_rating -= 25
-    $ theo_estabilidade -= 5
-    $ theo_ousadia -= 5
+    $ alterar_status("theo_rating", -25, "-25 RATING", "#e60909")
+    $ alterar_status("theo_foco", -5, "-5 FOCO", "#e60909")
+    $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
     jump segue_conversa_pizzaria
 
 label segue_conversa_pizzaria:
@@ -347,69 +429,92 @@ label segue_conversa_pizzaria:
 label cena_jantar_pais:
     scene salajantar with fade
     
-    "O tilintar dos talheres na porcelana era o único som na sala. No xadrez, o silêncio é foco. Aqui, é julgamento."
-    "Meu pai limpou o canto da boca com o guardanapo de linho. Ele ainda nem tinha olhado para mim."
-    # Pai bem para a esquerda (valor negativo para compensar o zoom)
-    show dr_henrique normal at modo_busto:
-        xalign -0.2  # Empurra ele mais para a borda esquerda
+    "O tilintar dos talheres na porcelana era o único som na sala. No xadrez, o silêncio é foco. Aqui, era julgamento."
     
-    # Mãe bem para a direita (valor acima de 1.0)
+    # Entrada imponente e lenta dos pais
+    show dr_henrique arrogante at modo_busto:
+        xalign -0.2
+        easein 2.0 xalign 0.1 # Aumentei para 2 segundos para ficar bem calmo
+        
     show dra_karolina normal at modo_busto:
-        xalign 1.2   # Empurra ela mais para a borda direita
+        xalign 1.2
+        easein 2.0 xalign 0.9
 
-    # Theo no meio dos dois (ligeiramente ajustado)
-    show theo triste at modo_busto:
-        xalign 0.5   # Centro absoluto
-    ph "Fiquei sabendo que o torneio no clube não correu como o esperado hoje, Theodoro. O Dr. Arnaldo mencionou que você... 'se atrapalhou'?"
+    pause 3 # Pausa para o jogador sentir o "peso" do ambiente
 
-    t "Foi um incidente técnico, pai. Eu estava com uma vantagem decisiva contra o Macedo."
+    # Theo entra de forma suave e mais lenta
+    show theo normal at modo_busto:
+        xalign 0.5
+    with Dissolve(1.0) # Dissolve lento enquanto o easeinbottom acontece
+    with easeinbottom 
 
+    "Meu pai limpou o canto da boca com o guardanapo de linho. Ele ainda nem tinha olhado para mim."
+
+    ph arrogante "Está atrasado, Theodoro..."
+
+    mae feliz "Onde você estava até uma hora dessa, querido?"
     
+    t triste "Foi mal, me atrasei, estava na lanchonete do Clube com o pessoal, depois do torneio."
 
-    ph "Vantagem não ganha causas, nem partidas. No Direito, se você deixa uma prova escapar porque 'se atrapalhou', o cliente vai preso."
-    ph "Um futuro jurista precisa de mais... Estabilidade." # Aspas fechadas aqui
+    ph serio "Fiquei sabendo que o torneio no clube não correu como o esperado hoje, Theodoro. O Dr. Arnaldo mencionou que você... 'se atrapalhou'?"
 
-    show theo raiva
+    # Adicionando 'normal' para a Side Image aparecer
+    mae normal "Sente-se querido, a comida está esfriando."
 
+    t normal "Foi um incidente técnico, pai. Eu estava com uma vantagem decisiva contra o Macedo."
 
-    show dra_karolina feliz
-    mae "Henrique, deixe o menino respirar. Querido, você não comeu quase nada ."
-    mae "Theo querido... sua mão está tremendo um pouco? Você deve estar stressado. Talvez o xadrez esteja drenando o Foco que você deveria dedicar aos Estudos."
+    ph arrogante "Vantagem não ganha causas, nem partidas. No Direito, se você deixa uma prova escapar porque 'se atrapalhou', o cliente vai preso."
+    ph arrogante "Um futuro jurista precisa de mais... Estabilidade."
 
+    # Aqui a Side Image vai aparecer porque adicionamos o atributo:
+    mae feliz "Henrique, deixe o menino respirar. Vamos, Theo, você precisa se alimentar bem, estou achando você muito magro."
 
-    show dra_karolina normal
+    mae triste "Vou pedir para a secretária agendar uma visitinha sua à clínica, para um checkup..."
+    
+    mae triste "Theo querido... sua mão está tremendo um pouco? Você deve estar stressado." 
+    
+    mae normal "Talvez o xadrez esteja drenando o Foco que você deveria dedicar aos Estudos."
 
     menu:
         "Tentar explicar o incidente da xícara.":
-            $ theo_estabilidade -= 5
-            $ theo_ousadia += 10
-            $ theo_foco -= 5
+            
+                        
+            $ alterar_status("theo_estabilidade", -5, "-5 ESTABILIDADE", "#e60909")
+            $ alterar_status("theo_foco", -5, "-5 FOCO", "#e60909")
+            $ alterar_status("theo_ousadia", +10, "+10 OUSADIA", "#e67e22")
+
+
+            t triste "Eu sei, eu sei..."
             t "O ambiente estava um caos! Alguém quebrou uma xícara atrás de mim. O barulho me pegou de surpresa!"
-            ph "Theodoro, para ser um homem bem sucedido você não pode se dar ao luxo de ser refém do ambiente."
+            ph raiva "Theodoro, para ser um homem bem sucedido você não pode se dar ao luxo de ser refém do ambiente."
             ph "O mundo é barulhento, Theo. Tribunais são barulhentos. Hospitais são caóticos."
             ph "Se uma xícara de porcelana é o suficiente para desestabilizar sua mão, então você ainda não passa de um amador brincando com bonecos de madeira."
             
             mae "Henrique, não seja tão duro... Mas ele tem um ponto, Theo. O autocontrole é a sua maior ferramenta"
-            mae "Imagine, se durante uma cirurgia eu me desesperasse porque um enfermeiro deixou um instrumento cair, ou porque o monitor começou a apitar fora de hora?"
-            mae "Vidas dependem da minha mão estar firme, não importa o barulho ao redor. Você precisa aprender que o seu foco deve ser uma fortaleza, Theo."
+            mae triste "Imagine, se durante uma cirurgia eu me desesperasse porque um enfermeiro deixou um instrumento cair, ou porque o monitor começou a apitar fora de hora?"
+            mae normal "Vidas dependem da minha mão estar firme, não importa o barulho ao redor. Você precisa aprender que o seu foco deve ser uma fortaleza, Theo."
             
-            ph "Exatamente. Agora, termine seu jantar. O silêncio é a melhor companhia para quem tem muito o que refletir."
+            ph pensativo "Exatamente. Agora, termine seu jantar. O silêncio é a melhor companhia para quem tem muito o que refletir."
 
         "Aceitar a crítica em silêncio.":
-            $ theo_estabilidade += 15
-            $ theo_ousadia -= 5
+            
+            $ alterar_status("theo_estabilidade", +15, "+15 ESTABILIDADE", "#09e639")
+            $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
             "Aperto o garfo com tanta força que meus dedos ficam brancos. Engulo o orgulho junto com a comida insossa."
+
+            t raiva "..."
+
             t "Sim, senhor. Foi um erro grosseiro. Vou garantir que minha concentração seja impenetrável na próxima."
             
-            ph "Bom. Disciplina é a única coisa que separa um Desembargador de um rábula. O rábula é barulhento, vive de desculpas e de 'quases'."
+            ph pensativo "Bom. Disciplina é a única coisa que separa um Desembargador de um rábula. O rábula é barulhento, vive de desculpas e de 'quases'."
             ph "Um homem da sua linhagem não 'se atrapalha'. Ele domina. Se o ambiente o afetou, é porque você permitiu que o ambiente fosse maior que a sua vontade."
             
-            mae "Veja pelo lado positivo, Henrique. Se ele reconhece a falha, pode focar em não repeti-la."
+            mae feliz "Veja pelo lado positivo, Henrique. Se ele reconhece a falha, pode focar em não repeti-la."
             mae "O erro no xadrez é um luxo que você pode cometer agora, Theo. Mas na mesa de cirurgia, o primeiro erro é o último."
             
             t "Eu entendo... Só preciso de tempo para treinar mais."
             
-            ph "Tempo é o recurso mais caro que temos. Não o desperdice com partidas medíocres contra jogadores de clube."
+            ph raiva "Tempo é o recurso mais caro que temos. Não o desperdice com partidas medíocres contra jogadores de clube."
             ph "Se quer ser um rei, comporte-se como um. Reis não dão desculpas para a coroa cair."
 
     mae "Sabe, filho, o vestibular está chegando. Não queremos que você pare de jogar, mas..."
@@ -458,18 +563,26 @@ label pos_jantar_quarto:
         "A dúvida rasteja pela minha mente. E se eles estiverem certos? E se eu for apenas um amador insistindo em um sonho frágil?"
 
     menu:
-        "Ligar o computador e estudar a partida contra o Macedo. (Foco +10)":
-            $ theo_foco += 10
+        "Ligar o computador e estudar a partida contra o Macedo.":
+            
+            $ alterar_status("theo_foco", +10, "+10 FOCO", "#1f08f2")
+            
             "Não posso mudar o jantar, mas posso mudar o próximo lance. Abro o banco de dados. O erro do Bispo não vai se repetir."
             
-        "Deitar e encarar o teto, tentando silenciar as vozes. (Estabilidade +10)":
-            $ theo_estabilidade += 10
+        "Deitar e encarar o teto, tentando silenciar as vozes.":
+            
+            $ alterar_status("theo_estabilidade", +10, "+10 ESTABILIDADE", "#09e639")
             "Fecho os olhos. Ignoro a medicina, ignoro o direito. Tento encontrar o centro. Onde o barulho das xícaras não alcança."
             
-        "Mandar mensagem para os amigos para desabafar. (Ousadia +5, Estabilidade +5)":
-            $ theo_ousadia += 5
-            $ theo_estabilidade += 5
-            "Pego o celular. Preciso de gente que fale a minha língua. Gente que não me veja como um diploma ambulante."
+        "Mandar mensagem para os amigos para desabafar.":
+           
+            $ alterar_status("theo_estabilidade", +5, "+5 ESTABILIDADE", "#09e639")
+            $ alterar_status("theo_ousadia", +5, "+5 OUSADIA", "#e67e22")
+
+            pause 1.5
+
+        
+    "Pego o celular. Preciso de gente que fale a minha língua. Gente que não me veja como um diploma ambulante."
 
     "O brilho do monitor é o meu farol. É aqui que o Theo morre e o enxadrista nasce."
     "Os olhos de Theo começam e se fechar e sua mente é tomada por uma lembrança de sua infância..."
@@ -490,21 +603,25 @@ label flashback_infancia:
     "Dez anos atrás..."
 
     "O escritório cheirava a couro e papel antigo. O único som era o do relógio de parede, rítmico e implacável."
-    
     "Eu tinha apenas oito anos. Estava escondido atrás da poltrona, tentando resolver um problema de mate em dois num tabuleiro de bolso."
     
-    # CORRIGIDO: Removido o 's' extra de 'sshow' e adicionado ':'
-    show dr_henrique normal at modo_busto:
-        xalign -0.2
+    # Entrada imponente do Dr. Henrique
+    show dr_henrique arrogante at modo_busto:
+        xalign 0.1
+    with easeinbottom 
+      
+    pause 1.5 # Reduzi um pouco para não travar o ritmo
 
     ph "Theodoro? O que eu disse sobre esses... brinquedos no meu escritório?" 
 
     "Tentei fechar o tabuleiro rapidamente, mas as peças de plástico fizeram um barulho seco no chão de madeira."
 
+    # Entrada do Theo Criança
     show theocriancafeliz:
         zoom 1.5
-        xalign 0.9
+        xalign 0.8
         yalign 0.4
+    with Dissolve(1.0) 
 
     t "Eu... eu já terminei o dever de latim, pai. Só estava praticando um pouco."
 
@@ -513,24 +630,39 @@ label flashback_infancia:
 
     "Ele caminhou até mim. Cada passo parecia uma sentença judicial."
 
-    show dr_henrique raiva at modo_busto:
-        xalign -0.2
-
-    ph "A vida não é um tabuleiro com regras claras e turnos alternados, meu filho."
-    ph "A vida é uma disputa de influência. Enquanto você move cavalos de plástico, os seus concorrentes estão movendo o mundo real."
+    ph raiva "A vida não é um tabuleiro com regras claras e turnos alternados, meu filho."
+    ph raiva "A vida é uma disputa de influência. Enquanto você move cavalos de plástico, os seus concorrentes estão movendo o mundo real."
 
     "Ele pegou o tabuleiro da minha mão. Não com raiva, mas com uma frieza que doía muito mais."
 
+    # Mudança de expressão do Theo
     hide theocriancafeliz
     show theocriancatriste:
         zoom 1.5
-        xalign 0.9  # Corrigido: Estava 0.99, o que jogava ele para fora da tela
+        xalign 0.8
         yalign 0.4
+    with dissolve
 
-    # CORRIGIDO: Adicionado ':' e corrigida a indentação do xalign abaixo
-    show dr_henrique normal at modo_busto:
-        xalign -0.2
-        
+    # --- NOVO MENU DE STATUS E EFEITOS ---
+    menu:
+        "Tentar recuperar o tabuleiro.":
+           
+
+            $ alterar_status("theo_ousadia", +10, "+10 OUSADIA", "#e67e22")
+            $ alterar_status("theo_estabilidade", -10, "-10 ESTABILIDADE", "#e60909")
+            t "Mas pai, é só um jogo de estratégia! Eu estou aprendendo!"
+            ph raiva "Estratégia se aprende em Maquiavel, não com bonecos de plástico."
+            with hpunch # Este comando funciona nativamente (treme a tela)
+
+        "Abaixar a cabeça e aceitar.":
+            
+            $ alterar_status("theo_foco", +5, "+5 FOCO", "#1f08f2")
+            $ alterar_status("theo_estabilidade", +5, "+5 ESTABILIDADE", "#09e639")
+            $ alterar_status("theo_ousadia", -10, "-10 OUSADIA", "#e67e22")
+            "Apenas assinto, sentindo um nó na garganta. O silêncio é minha única defesa."
+            ph "Bom. O silêncio é a primeira lição de um homem de Estado."
+    # -------------------------------------
+
     ph "Vou guardar isso. Quando você for um Procurador, terá tempo para jogos de tabuleiro. Até lá, foque no que importa."
 
     stop music fadeout 3.0
@@ -538,7 +670,9 @@ label flashback_infancia:
     
     "Aquelas palavras ficaram gravadas. Cada vez que toco em uma peça, sinto o peso do olhar dele sobre meus ombros."
 
-    $ theo_estabilidade -= 30
+    # Penalidade fixa da memória
+    
+    $ alterar_status("theo_estabilidade", -20, "-20 ESTABILIDADE", "#e60909")
 
     jump cena_escola_rival
 
@@ -558,22 +692,27 @@ label cena_escola_rival:
     "No Magnum, a mediocridade não é apenas uma falha; é um pecado social. E depois do que aconteceu no clube, eu sinto o olhar de todos me empurrando para baixo da linha."
 
     # ... código do mural anterior ...
-    hide muralmagnus
+    show muralmagnus:
+        easeout 2.5 alpha 0.0 yoffset -50 # Diminui a opacidade e sobe 50 pixels
+    
+    "A frase ecoa na minha mente... Os melhores acima dos demais"
+    
+    hide muralmagnus # Remove o objeto definitivamente depois da animação
     # Léo bem para a esquerda (fora do limite 0.0)
+    
+    
     show leo normal at modo_busto:
-        xalign -0.25
+        xalign -0.2          # Começa fora da tela na esquerda
+        easein 1.5 xalign 0.1 # Desliza suavemente em 1.5s
         
-    # Luísa centralizada (como ponto de referência)
+    show theo normal at modo_busto:
+        xalign 1.2           # Começa fora da tela na direita
+        easein 1.5 xalign 0.9 # Desliza para a posição final
+        
     show luisa normal at modo_busto:
         xalign 0.5
-        
-    # Theo bem para a direita (além do limite 1.0)
-    show theo normal at modo_busto:
-        xalign 1.25
-
-    # Aplica a transição de subida
-    with easeinbottom
-
+    with Dissolve(1.5)       # Ela surge no meio enquanto os outros deslizam
+    
     l "Cara, esse lema do Magnum me dá arrepios. 'Os melhores acima dos demais'... parece frase de vilão de RPG."
     
     lu "É a realidade, Léo. Ou você é o martelo, ou é o prego."
@@ -588,22 +727,25 @@ label cena_escola_rival:
     play sound "audio/steps_shoes.ogg" # Som de sapatos sociais caros
     "O ritmo dos passos no corredor muda. É uma cadência precisa, de quem não tem pressa porque sabe que o espaço o pertence."
     
-    "Enzo se aproxima. Ele não precisa de uniforme personalizado ou de um séquito; sua postura e o relógio de pulso que vale mais que o carro da maioria dos professores dizem tudo o que ele quer que saibamos."
+    "Enzo se aproxima. Um garoto exibido que se vangloria de possuir itens, que valem mais que o salário dos professores" 
 
-    # Usando tudo na mesma linha para evitar erros de indentação
+    # Enzo entrando e ficando bem no cantinho direito
     show enzo normal at modo_busto:
-        xalign 0.8
+        xzoom -1.0            # Vira ele para a esquerda (encarando os outros)
+        xalign 1.5            # Começa totalmente fora
+        easein 1.5 xalign 1.05 # Desliza até o extremo direito (0.9 era mais pro centro)
     
     show leo raiva at modo_busto:
-        xalign -0.25
+        xalign -0.1
+        xzoom -1.0
         
     show luisa triste at modo_busto:
-        xalign 0.5
+        xalign 0.25
         
     show theo raiva at modo_busto:
-        xalign 1.25
+        xalign 0.6
 
-    with dissolve
+    with easeinright
 
 
     enz "Hum... Harvard... ouvi dizer que o 'Rei de Vidro' teve um colapso nervoso no clube por causa de uma xícara de café. Procede, Theo?"
@@ -627,13 +769,16 @@ label cena_escola_rival:
 
     menu (menu_y=0.8):
         "Manter a elegância e não cair na pilha.":
-            $ theo_estabilidade += 10
+            
+            $ alterar_status("theo_estabilidade", +10, "+10 ESTABILIDADE", "#09e639")
+            
             t "A notícia corre rápido, Enzo. Mas não se preocupe, estarei preparado se por ventura nos encontrarmos na final"
             enz "Nossa, podemos marcar um CAFÉ qualquer dia desses, ops, esqueci, vai que uma xícara caia não é?"
 
         "Devolver a provocação à altura.":
-            $ theo_ousadia += 10
-            $ theo_foco -= 5
+            
+            $ alterar_status("theo_foco", -5, "-5 FOCO", "#e60909")
+            $ alterar_status("theo_ousadia", +10, "+10 OUSADIA", "#e67e22")
             t "Engraçado você falar de xadrez de elite, quando todo mundo sabe que você só é titular da equipe porque seu pai doou o novo laboratório de química."
             "Os olhos de Enzo brilham com uma raiva contida. Acertei no ponto fraco."
             enz "Cuidado, Theo. Vidro trinca fácil quando a pressão aumenta. E eu vou garantir que o Magnum inteiro veja você se estraçalhar no ginásio."
@@ -648,7 +793,8 @@ label cena_escola_rival:
         xpos 0.1
         zoom 1.1
         yoffset 50
-    with easeinleft 
+        xzoom -1.0  # Removed the space here
+    with easeinleft
 
     l "Theo, não perde tempo com esse lixo! Enzo, você acha que o dinheiro do seu pai conserta seu caráter?"
     
@@ -722,41 +868,53 @@ label cena_escola_rival:
     # O Theo se move e cresce ANTES do jogador escolher, 
     # criando o clima de "hora da decisão".
     show theo raiva at modo_busto:
-        ease 0.5 xpos 0.5 zoom 1.3 yoffset 200
+        ease 0.5 xpos 0.3 zoom 1.3 yoffset 200
 
     show enzo raiva at modo_busto:
-        xalign 0.7
+        xalign 1.1
 
     menu:
         "Ficar entre os dois e encerrar a briga.":
-            $ theo_estabilidade += 15
+            $ alterar_status("theo_estabilidade", +15, "+15 ESTABILIDADE", "#09e639")
             t "Acabou, Enzo. Some daqui antes que eu decida que a minha reputação vale menos que o prazer de te ver no chão."
             t "A gente se vê no Magnum Chess Masters. Tente não engasgar com o próprio ego até lá."
             
-            # Enzo reage antes de sair
-            show enzo raiva at modo_busto:
-                xalign 0.7
+            # Enzo reage virando ANTES de falar
+            show enzo esnobe at modo_busto:
+                xzoom -1.0
+                xalign 0.99
+            with dissolve
+
             enz "O vidro está trincando, Theo... eu consigo ouvir daqui."
 
         "Explodir com Enzo.":
-            $ theo_ousadia += 20
-            $ theo_foco -= 10
-            # Efeito de Flash para a explosão de raiva
+            
+            $ alterar_status("theo_foco", -10, "-10 FOCO", "#e60909")
+            $ alterar_status("theo_ousadia", +20, "+20 OUSADIA", "#e67e22")
+            
             show white onlayer overlay:
                 alpha 0.6
                 linear 0.2 alpha 0.0
                 
             t "O único 'marginal' aqui é você, que precisa diminuir os outros pra se sentir grande!"
             t "O Leo vale dez de você, e no torneio, eu vou te enterrar tão fundo que nem o dinheiro do seu pai vai te achar."
+            
+            show enzo esnobe at modo_busto:
+                xzoom -1.0
+                xalign 0.99
+            
             enz "Que dramático. Guarde esse fôlego para quando você estiver perdendo por tempo no ginásio."
+
+    # --- FIM DO MENU (O código volta para a margem da esquerda) ---
+
     hide luisa
-    # Agora mostramos ela do zero com uma posição fixa
-    show luisa raiva at modo_busto:
-        xalign 0.4 
+    show luisa raiva at modo_busto behind leo:
+        xalign -0.1
     with dissolve
     
-
-    show enzo arrogante
+    show enzo arrogante at modo_busto:
+        xzoom -1.0
+        xalign 0.99
 
     hide enzo with moveoutright
     play sound "audio/steps_fast.ogg"
@@ -768,9 +926,8 @@ label cena_escola_rival:
     t "Ele é um covarde, Leo. Ele ataca quem ele não consegue vencer no tabuleiro."
 
     show luisa raiva at modo_busto:
-        xalign 0.7
-        
-    with easeinleft # Alinhado na mesma coluna do 'show'
+        xalign 0.99
+    with easeinleft
         
     
 
@@ -822,7 +979,7 @@ label abrir_hub:
     $ renpy.free_memory() 
     
     # 2. Transição de entrada: 'with fade' faz o efeito de fechar/abrir os olhos
-    scene singlebedroom with fade 
+    scene quartonoite with fade 
     
     # 3. Chama a tela do quarto
     call screen hub_principal
@@ -832,10 +989,14 @@ label cena_pos_vitoria_enzo:
     scene bibliotecajogo with hpunch
     
     
-    show theo feliz at left
-    show leo feliz at center
-    show maya feliz at left
-    show luisa feliz
+    show theo feliz at modo_busto:
+        xalign -0.1
+    show leo feliz at modo_busto:
+        xalign 1.1
+    show maya feliz at modo_busto:
+        xalign 0.3
+    show luisa feliz at modo_busto:
+        xalign 0.7
     with dissolve
 
     l "EU SABIA! Theo, você não jogou xadrez, você deu uma aula de etiqueta! O Enzo saiu tão humilhado que eu achei que ele ia pedir desculpas por existir!"
@@ -846,7 +1007,9 @@ label cena_pos_vitoria_enzo:
     l "Ah, Luísa, deixa disso! Ele venceu o cara mais pé no saco da escola. Hoje é dia de comemorar, não de revisar planilha!"
     
     # 2. A CHEGADA DO ENZO (Clima pesado)
-    show enzo raiva at pos_luisa with easeinright
+    show enzo raiva at modo_busto with easeinright:
+        xalign 0.8
+        xzoom -1.0
     
     enz "Riam enquanto podem. Aproveitem esse 'golpe de sorte' para se sentirem importantes por cinco minutos."
 
@@ -855,13 +1018,19 @@ label cena_pos_vitoria_enzo:
 
     # 3. A TRETA E A AMEAÇA
     show enzo raiva:
-        xalign 0.7 zoom 2.2
-    with EaseIn(0.5)
+        # Posição de onde ele vem (ou onde ele já está)
+        # xalign 0.5 
+        zoom 0.8
+        # O movimento de deslizar suave:
+        easein 0.5 xalign 0.7 
+    
+    # Se quiser o tremor/piscar que você pediu antes:
+    with vpunch
 
     enz "Você fala demais para alguém que depende da caridade da diretoria, Leo. Onde você vai fazer suas piadinhas quando sua bolsa for cancelada semana que vem?"
     
     show leo triste
-    le "O-o quê? Você tá louco? Eu vou arrebentar sua cara!"
+    l "O-o quê? Você tá louco? Eu vou arrebentar sua cara!"
 
     enz "Se você encostar suas mãos imundas em mim, será seu fim."
 
@@ -884,8 +1053,9 @@ label cena_pos_vitoria_enzo:
         "O que você vai fazer?"
 
         "Entrar na briga para defender o Leo":
-            $ theo_ousadia += 15
-            $ theo_estabilidade -= 10
+            
+            $ alterar_status("theo_estabilidade", -10, "-10 ESTABILIDADE", "#e60909")
+            $ alterar_status("theo_ousadia", +15, "+15 OUSADIA", "#e67e22")
             "Você não pensa duas vezes. Se o Leo vai cair, você cai com ele!"
             show theo raiva at center with easeinleft
             "Você se joga na frente de um dos amigos de Enzo, empurrando-o com força."
@@ -893,8 +1063,9 @@ label cena_pos_vitoria_enzo:
             "O Ginásio vira um caos de empurrões e gritos."
 
         "Tentar separar a briga e apaziguar":
-            $ theo_foco += 10
-            $ theo_estabilidade += 5
+            
+            $ alterar_status("theo_foco", +10, "+10 FOCO", "#1f08f2")
+            $ alterar_status("theo_estabilidade", +5, "+5 ESTABILIDADE", "#09e639")
             "Você corre para o meio do conflito, tentando criar uma barreira entre eles."
             t "PAROU! Leo, solta ele! Enzo, recua agora!"
             show maya triste
@@ -903,8 +1074,10 @@ label cena_pos_vitoria_enzo:
             lu "Leo, cuidado!!!"
 
         "Ficar paralisado pelo choque (Instabilidade)":
-            $ theo_estabilidade -= 20
-            $ theo_foco -= 10
+           
+            $ alterar_status("theo_foco", -10, "-10 FOCO", "#e60909")
+            $ alterar_status("theo_estabilidade", -20, "-20 ESTABILIDADE", "#e60909")
+            $ alterar_status("theo_ousadia", -5, "-5 OUSADIA", "#e60909")
             "Seu coração dispara. O som do soco ecoa na sua mente e você simplesmente trava."
             "As vozes ao redor parecem abafadas. Você vê a bolsa do Leo e o futuro de vocês escorrendo junto com o sangue no chão."
             ma "THEO! NÃO FICA AÍ PARADO! FAZ ALGUMA COISA!"

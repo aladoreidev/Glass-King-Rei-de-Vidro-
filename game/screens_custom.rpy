@@ -400,3 +400,78 @@ screen tela_treinamento(puzzle_atual, opcoes_sorteadas, **kwargs):
                     textbutton item[0]:
                         action Return(item[1])
                         style "hub_button"
+
+
+
+
+screen status_hud():
+    zorder 100 # Isso garante que os stats fiquem na frente de tudo
+    
+    # Criamos um quadro no canto superior esquerdo
+    frame:
+        xalign 0.02
+        yalign 0.02
+        background Solid("#00000077") # Fundo preto meio transparente
+        padding (10, 10)
+
+        vbox:
+            spacing 5
+            
+            # Linha do Rating
+            text "🏆 Rtg: [theo_rating]" size 18 color "#f1c40f"
+            
+            # Linha Horizontal separadora
+            hbox:
+                spacing 15
+                # Status Secundários
+                text "⚖️ E: [theo_estabilidade]" size 16 color "#2ecc71"
+                text "🎯 F: [theo_foco]" size 16 color "#3498db"
+                text "🔥 O: [theo_ousadia]" size 16 color "#e67e22"
+
+
+
+
+init -1:
+    transform feedback_subir:
+        alpha 0.0 yoffset 20
+        linear 0.3 alpha 1.0 yoffset 0
+        pause 1.5
+        linear 0.5 alpha 0.0 yoffset -40
+
+# A Screen agora é ultra simples para não pesar
+screen aviso_status_rapido(mensagem, cor_texto="#fff", pos_y=0.45):
+    zorder 150
+    text "[mensagem]":
+        at feedback_subir
+        align (0.15, pos_y) 
+        size 38
+        color cor_texto
+        bold True
+        outlines [(2, "#000")]
+    timer 2.5 action Hide()
+
+init python:
+    import time
+    if not hasattr(store, 'posicao_aviso'):
+        store.posicao_aviso = 0
+
+    def alterar_status(nome_var, valor, mensagem, cor="#fff"):
+        # 1. Atualiza o valor da variável (theo_foco, etc)
+        if nome_var in globals():
+            globals()[nome_var] += valor
+        
+        # 2. CALCULA A POSIÇÃO E JÁ MUDA O CONTADOR PARA O PRÓXIMO
+        # Assim, mesmo que as chamadas sejam rápidas, o valor de y_final muda
+        y_final = 0.35 + (store.posicao_aviso * 0.08)
+        store.posicao_aviso = (store.posicao_aviso + 1) % 5 # Ciclo de 5 posições
+        
+        # 3. ID único para o Ren'Py não se confundir
+        tag_id = "aviso_" + str(time.time()) + str(nome_var)
+        
+        # 4. Mostra a tela
+        renpy.show_screen("aviso_status_rapido", mensagem, cor_texto=cor, pos_y=y_final, _tag=tag_id)
+        
+        # 5. Pausa técnica para o motor gráfico respirar
+        renpy.with_statement(None)
+        renpy.pause(0.1, hard=False)
+        renpy.restart_interaction()

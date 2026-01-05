@@ -1,3 +1,20 @@
+init:
+    python:
+        import math
+
+        def shake_dist(trans, st, at, dist=10):
+            trans.xoffset = int(math.sin(st * 30) * dist)
+            trans.yoffset = int(math.cos(st * 30) * dist)
+            if st < 0.2: # Duração do tremor
+                return 0
+            else:
+                trans.xoffset = 0
+                trans.yoffset = 0
+                return None
+
+    transform shake:
+        function renpy.curry(shake_dist)(dist=10)
+
 # =========================================================
 # 1. DEFINIÇÕES (Sempre no topo, fora de labels)
 # =========================================================
@@ -14,6 +31,8 @@ define enz = Character("Enzo", color="#e74c3c", image="enzo")
 define mae = Character("Dra karolina", color="#ed2913", image="dra_karolina")
 define v = Character("Vico", color="#043d23", image="vico")
 
+
+
 # Para sprites de 2400x3600px
 
 
@@ -22,12 +41,97 @@ transform modo_full:
     zoom 0.5
     yoffset 0
 
-
-
 transform modo_busto:
     yalign 1.0     # Alinha a base da imagem no fundo da tela
     zoom 0.75   # Diminuí bastante o zoom para o rosto entrar na tela
     yoffset 0      # Resetamos o offset para ver onde a cabeça para
+
+
+transform side_look:
+    # 1. Ajuste do tamanho
+    zoom 0.35       # Aumentamos de 0.12 para 0.35 (quase o triplo do tamanho anterior)
+    
+    # 2. Ajuste do enquadramento (pegar a cabeça)
+    # Como a imagem original tem 3600px, o rosto está lá no topo.
+    yanchor 0.1     # Fixa o "ponto de ancoragem" perto do topo da imagem
+    ypos 0.1        # Posiciona esse ponto no topo da área da side image
+    
+    # 3. Ajuste de posição na tela
+    xalign 0.0      # Gruda na esquerda
+    yalign 1.0      # Gruda no fundo (alinhado com a caixa de texto)
+    
+    # 4. Ajuste fino (se precisar afastar ou subir)
+    xoffset 10      # Empurra um pouquinho para a direita para não cortar no canto
+    yoffset 60    # Sobe um pouquinho se estiver atrás do texto
+
+
+transform side_look_small:
+    zoom 0.25        # Ajusta o 600px para caber no canto
+    xalign 0.0        # Fixa na esquerda
+    yalign 1.0        # Fixa na base
+    xoffset 20        # Afasta um pouco da borda
+    yoffset 0
+
+
+
+
+
+
+
+
+
+
+
+# 2. Declare as Side Images usando 'At' em vez de LayeredImageProxy
+# O modelo é: image side [tag] [expressão] = At("nome_do_arquivo", side_look)
+
+
+
+
+
+image side theo triste = At("theo triste", side_look)
+image side theo normal = At("theo normal", side_look)
+image side theo feliz = At("theo feliz", side_look)
+image side theo raiva = At("theo raiva", side_look)
+
+# Léo
+image side leo normal = At("leo normal", side_look)
+image side leo feliz = At("leo feliz", side_look)
+image side leo triste = At("leo triste", side_look)
+image side leo raiva = At("leo raiva", side_look)
+
+# Maya
+image side maya normal = At("maya normal", side_look)
+image side maya feliz = At("maya feliz", side_look)
+image side maya triste = At("maya triste", side_look)
+image side maya raiva = At("maya raiva", side_look)
+
+# Luísa
+image side luisa normal = At("luisa normal", side_look)
+image side luisa feliz = At("luisa feliz", side_look)
+image side luisa triste = At("luisa triste", side_look)
+image side luisa raiva = At("luisa raiva", side_look)
+
+# Dr. Henrique (Usando o transform para imagens menores)
+image side dr_henrique arrogante = At("dr_henrique arrogante", side_look_small)
+image side dr_henrique pensativo = At("dr_henrique pensativo", side_look_small)
+image side dr_henrique triste = At("dr_henrique triste", side_look_small)
+image side dr_henrique raiva = At("dr_henrique raiva", side_look_small)
+
+# Side Images da Dra. Karolina
+image side dra_karolina normal = At("dra_karolina normal", side_look_small)
+image side dra_karolina feliz = At("dra_karolina feliz", side_look_small)
+image side dra_karolina triste = At("dra_karolina triste", side_look_small)
+image side dra_karolina raiva = At("dra_karolina raiva", side_look_small)
+
+# enzo
+image side enzo normal = At("enzo normal", side_look)
+image side enzo feliz = At("enzo feliz", side_look)
+image side enzo arrogante = At("enzo arrogante", side_look)
+image side enzo raiva = At("enzo raiva", side_look)
+image side enzo esnobe = At("enzo esnobe", side_look)
+
+
 # =========================================================
 # 2. LABEL DE TESTE (Vem depois das definições)
 # =========================================================
