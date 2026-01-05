@@ -89,28 +89,18 @@ transform side_look_small:
 
 
 
-image side theo triste = At("theo triste", side_look)
-image side theo normal = At("theo normal", side_look)
-image side theo feliz = At("theo feliz", side_look)
-image side theo raiva = At("theo raiva", side_look)
+image theo = "theo normal"
+image leo = "leo normal"
+image maya = "maya normal"
+image luisa = "luisa normal"
+image enzo = "enzo normal"
 
-# Léo
-image side leo normal = At("leo normal", side_look)
-image side leo feliz = At("leo feliz", side_look)
-image side leo triste = At("leo triste", side_look)
-image side leo raiva = At("leo raiva", side_look)
 
-# Maya
-image side maya normal = At("maya normal", side_look)
-image side maya feliz = At("maya feliz", side_look)
-image side maya triste = At("maya triste", side_look)
-image side maya raiva = At("maya raiva", side_look)
 
-# Luísa
-image side luisa normal = At("luisa normal", side_look)
-image side luisa feliz = At("luisa feliz", side_look)
-image side luisa triste = At("luisa triste", side_look)
-image side luisa raiva = At("luisa raiva", side_look)
+# =========================================================
+# SIDE IMAGES - SKINS ESCOLARES
+# =========================================================
+
 
 # Dr. Henrique (Usando o transform para imagens menores)
 image side dr_henrique arrogante = At("dr_henrique arrogante", side_look_small)
@@ -124,12 +114,74 @@ image side dra_karolina feliz = At("dra_karolina feliz", side_look_small)
 image side dra_karolina triste = At("dra_karolina triste", side_look_small)
 image side dra_karolina raiva = At("dra_karolina raiva", side_look_small)
 
+# --- THEO ---
+image side theo normal = At("theo normal", side_look)
+image side theo triste = At("theo triste", side_look)
+image side theo raiva = At("theo raiva", side_look)
+# Versões Escolares
+image side theo escolar normal = At("theo escolar normal", side_look)
+image side theo escolar triste = At("theo escolar triste", side_look)
+image side theo escolar raiva = At("theo escolar raiva", side_look)
+
+# --- LÉO ---
+image side leo normal = At("leo normal", side_look)
+image side leo triste = At("leo triste", side_look)
+image side leo raiva = At("leo raiva", side_look)
+# Versões Escolares
+image side leo escolar normal = At("leo escolar normal", side_look)
+image side leo escolar triste = At("leo escolar triste", side_look)
+image side leo escolar raiva = At("leo escolar raiva", side_look)
+
+# --- LUÍSA ---
+image side luisa normal = At("luisa normal", side_look)
+image side luisa triste = At("luisa triste", side_look)
+image side luisa raiva = At("luisa raiva", side_look)
+# Versões Escolares
+image side luisa escolar normal = At("luisa escolar normal", side_look)
+image side luisa escolar triste = At("luisa escolar triste", side_look)
+image side luisa escolar raiva = At("luisa escolar raiva", side_look)
+
+# --- MAYA ---
+image side maya normal = At("maya normal", side_look)
+image side maya triste = At("maya triste", side_look)
+image side maya raiva = At("maya raiva", side_look)
+# Versões Escolares (Se ela tiver)
+image side maya escolar normal = At("maya escolar normal", side_look)
+
+
+
 # enzo
 image side enzo normal = At("enzo normal", side_look)
 image side enzo feliz = At("enzo feliz", side_look)
 image side enzo arrogante = At("enzo arrogante", side_look)
 image side enzo raiva = At("enzo raiva", side_look)
 image side enzo esnobe = At("enzo esnobe", side_look)
+
+
+
+# THEO
+image side theo = At(SideImage(), side_look)
+
+# LÉO
+image side leo = At(SideImage(), side_look)
+
+# MAYA
+image side maya = At(SideImage(), side_look)
+
+# LUÍSA
+image side luisa = At(SideImage(), side_look)
+
+# ENZO
+image side enzo = At(SideImage(), side_look)
+
+
+
+
+
+
+
+
+
 
 
 # =========================================================
@@ -184,3 +236,6 @@ label cena_exemplo_dimensoes_personagens:
     
     pause
     return
+
+
+

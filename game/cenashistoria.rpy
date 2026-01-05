@@ -701,15 +701,15 @@ label cena_escola_rival:
     # Léo bem para a esquerda (fora do limite 0.0)
     
     
-    show leo normal at modo_busto:
+    show leo escolar normal at modo_busto:
         xalign -0.2          # Começa fora da tela na esquerda
         easein 1.5 xalign 0.1 # Desliza suavemente em 1.5s
         
-    show theo normal at modo_busto:
+    show theo escolar normal at modo_busto:
         xalign 1.2           # Começa fora da tela na direita
         easein 1.5 xalign 0.9 # Desliza para a posição final
         
-    show luisa normal at modo_busto:
+    show luisa escolar normal at modo_busto:
         xalign 0.5
     with Dissolve(1.5)       # Ela surge no meio enquanto os outros deslizam
     
@@ -735,14 +735,14 @@ label cena_escola_rival:
         xalign 1.5            # Começa totalmente fora
         easein 1.5 xalign 1.05 # Desliza até o extremo direito (0.9 era mais pro centro)
     
-    show leo raiva at modo_busto:
+    show leo escolar raiva at modo_busto:
         xalign -0.1
         xzoom -1.0
         
-    show luisa triste at modo_busto:
+    show luisa escolar triste at modo_busto:
         xalign 0.25
         
-    show theo raiva at modo_busto:
+    show theo escolar raiva at modo_busto:
         xalign 0.6
 
     with easeinright
@@ -755,12 +755,12 @@ label cena_escola_rival:
    
 
     # Saída suave da Luísa e do Leo (primeira aparição)
-    hide luisa
-    hide leo
+    hide luisa escolar
+    hide leo escolar
     with dissolve
 
     # Theo se move suavemente para a esquerda antes do menu
-    show theo raiva at modo_busto:
+    show theo escolar raiva at modo_busto:
         ease 0.5 xalign 0.0  # Removi o '5' que estava aqui
 
     
@@ -786,10 +786,10 @@ label cena_escola_rival:
     # --- TRANSIÇÃO SUAVE ---
     
     # Saída suave do Theo deslizando para a esquerda
-    hide theo with easeoutleft 
+    hide theo escolar with easeoutleft 
 
     # Entrada suave do Leo com as configurações que definimos
-    show leo raiva at modo_busto:
+    show leo escolar raiva at modo_busto:
         xpos 0.1
         zoom 1.1
         yoffset 50
@@ -843,7 +843,7 @@ label cena_escola_rival:
     l "Direito? Eu vou te mostrar o meu direito se você falar da minha mãe ou da minha bolsa de novo!"
 
     # O clima pesa. Luísa tenta intervir.
-    show luisa raiva at modo_busto:
+    show luisa escolar raiva at modo_busto:
         xalign 1.1  # Valor seguro para aparecer na direita sem sumir
         yalign 1.0
     with easeinright
@@ -863,11 +863,11 @@ label cena_escola_rival:
 
 
     
-    hide luisa
+    hide luisaescolar
 
     # O Theo se move e cresce ANTES do jogador escolher, 
     # criando o clima de "hora da decisão".
-    show theo raiva at modo_busto:
+    show theo escolar raiva at modo_busto:
         ease 0.5 xpos 0.3 zoom 1.3 yoffset 200
 
     show enzo raiva at modo_busto:
@@ -907,8 +907,8 @@ label cena_escola_rival:
 
     # --- FIM DO MENU (O código volta para a margem da esquerda) ---
 
-    hide luisa
-    show luisa raiva at modo_busto behind leo:
+    hide luisa escolar
+    show luisa escolar raiva at modo_busto behind leo:
         xalign -0.1
     with dissolve
     
@@ -925,7 +925,7 @@ label cena_escola_rival:
 
     t "Ele é um covarde, Leo. Ele ataca quem ele não consegue vencer no tabuleiro."
 
-    show luisa raiva at modo_busto:
+    show luisa escolar raiva at modo_busto:
         xalign 0.99
     with easeinleft
         

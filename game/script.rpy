@@ -90,7 +90,7 @@ label start:
     
     # 2. Agora o salto para o início da história
     # (Descomente apenas o que for testar)
-    jump cena_derrota_clube
+    #jump cena_derrota_clube
     #jump boss_fight_enzo
     #jump abrir_hub
     #jump teste_de_expressoes
@@ -98,7 +98,7 @@ label start:
     #jump encontro_amigos_pos_derrota
     #jump cena_escola_rival
     #jump flashback_infancia
-    #jump cena_jantar_pais
+    jump cena_jantar_pais
     show screen status_hud
     #jump cena_pos_vitoria_enzo
 
